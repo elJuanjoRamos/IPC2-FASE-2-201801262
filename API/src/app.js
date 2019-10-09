@@ -8,12 +8,6 @@ var app = express();
 var port = 3000;
 var uri = '/api/v1/';
 
-//Routes
-var rolRoute = require('./app/routes/rol.routes');
-
-//Vistas
-
-
 //Body-Parser Config
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,8 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Autorization');
-    if (req.method == 'OPTIONS') {
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Authorization');
+    if (req.methods == "OPTIONS") {
         res.sendStatus(200);
     } else {
         next();
@@ -31,8 +25,16 @@ app.use(function(req, res, next) {
 });
 
 
+//Routes
+var rolRoute = require('./app/routes/rol.routes');
+var usuarioRoute = require('./app/routes/usuario.routes');
+var cursoRoute = require('./app/routes/curso.routes');
+
+
 //middlewares
 app.use(uri, rolRoute);
+app.use(uri, usuarioRoute);
+app.use(uri, cursoRoute);
 
 
 app.listen(port, function() {

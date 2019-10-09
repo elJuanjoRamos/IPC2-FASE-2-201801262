@@ -1,0 +1,182 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Cursos</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Cursos</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card-wrapper">
+                <!-- Tags -->
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Formulario de Cursos</h3>
+                    </div>
+                    <!-- Card body -->
+                    <div *ngIf="loginForm" class="card-body">
+                        <form [formGroup]="loginForm">
+                            <!-- Input groups with icon -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="books"></i></span>
+                                            </div>
+                                            <input type="text" formControlName="nombre" placeholder="Nombre del curso" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }" />
+                                            <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                                                <div *ngIf="f.nombre.errors.required">Nombre es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class=""></i></span>
+                                            </div>
+                                            <input type="text" formControlName="codigo" placeholder="Codigo de curso" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.codigo.errors }" />
+                                            <div *ngIf="submitted && f.codigo.errors" class="invalid-feedback">
+                                                <div *ngIf="f.codigo.errors.required">El codigo es requerida</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <select formControlName="estado" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.estado.errors }">
+                                                        <option value="1">Habilitado</option>
+                                                        <option value="0">Deshabilitado</option>
+                                                     </select>
+                                            <div *ngIf="submitted && f.estado.errors" class="invalid-feedback">
+                                                <div *ngIf="f.estado.errors.required">El estado es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Input groups with icon -->
+                            <div class="row">
+                                <div class="card-body">
+                                    <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                            Aceptar
+                                    </button>
+                                    <button type="button" (click)="cancelar()" class="btn btn-warning">Cancelar</button>
+                                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Cursos Registrados</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-flush" id="datatable-basic">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID#</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
+
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="arrayCursos.lengt !=0">
+                            <tr *ngFor="let u of arrayCursos">
+                                <th scope="row">
+                                    {{u.idCurso}}
+                                </th>
+                                <td>
+                                    {{u.nombre}}
+                                </td>
+                                <td>
+                                    {{u.codigo}}
+                                </td>
+                                <td *ngIf="u.estado == 1">
+                                    <span class="badge badge-success">Habilitado</span>
+                                </td>
+                                <td *ngIf="u.estado == 0">
+                                    <span class="badge badge-danger">Deshabilitado</span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item">Detalles</a>
+                                            <a *ngIf="u.estado == 0" class="dropdown-item" (click)='habilitar(u)'>Habilitar</a>
+                                            <a *ngIf="u.estado == 1" class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idCurso)'>Deshabilitar</a>
+                                            <a [routerLink]="['/home/dashboard/adm/admin/cursos/', u.idCurso]" class="dropdown-item">Editar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tfoot>
+                                <div>
+                                </div>
+                            </tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+            <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                <div class="modal-content bg-gradient-danger">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-notification">Tu atencion es requerida</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="py-3 text-center">
+                            <i class="ni ni-bell-55 ni-3x"></i>
+                            <h4 class="heading mt-4">Un Curso esta por ser deshabilitado</h4>
+                            <p>Deshabilitar un curso significa que no podra ser utilizado, </p>
+                            <p>no se le podra asignar auxiliar o seccion y los estudiantes no podran verlo.</p>
+                            <p>Presione Eliminar si esta seguro de sus acciones.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()' data-dismiss="modal">Deshabilitar</button>
+                        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

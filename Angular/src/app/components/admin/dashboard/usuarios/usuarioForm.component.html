@@ -1,0 +1,100 @@
+<div class="main-content" id="panel">
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <h6 class="h2 text-white d-inline-block mb-0">Formulario Usuario</h6>
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a>Dashboards</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Usuario</li>
+                                <li class="breadcrumb-item active" aria-current="page">Nuevo Usuario</li>
+
+
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+                        <a [routerLink]="['/home/dashboard/adm/admin/usuarios']" class="btn btn-sm btn-neutral">Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-wrapper">
+                    <!-- Form controls -->
+                    <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header">
+                            <h3 class="mb-0">Form controls</h3>
+                        </div>
+                        <!-- Card body -->
+                        <div *ngIf="loginForm" class="card-body">
+                            <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="nombre">Nombre</label>
+                                    <input type="text" formControlName="nombre" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }" />
+                                    <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                                        <div *ngIf="f.nombre.errors.required">Nombre es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="apellido">Apellido</label>
+                                    <input type="text" formControlName="apellido" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.apellido.errors }" />
+                                    <div *ngIf="submitted && f.apellido.errors" class="invalid-feedback">
+                                        <div *ngIf="f.apellido.errors.required">Apellido es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="username">Username</label>
+                                    <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                                        <div *ngIf="f.username.errors.required">Username es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="password">Password</label>
+                                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">El password es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="Rol_idRol">Rol de Usuario</label>
+                                    <select formControlName="Rol_idRol" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Rol_idRol.errors }">
+                                        <option value="1">Administrador</option>
+                                        <option value="2">Auxiliar</option>
+                                        <option value="3">Estudiante</option>
+                                     </select>
+                                    <div *ngIf="submitted && f.Rol_idRol.errors" class="invalid-feedback">
+                                        <div *ngIf="f.Rol_idRol.errors.required">Rol es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                Aceptar
+                                        </button>
+                                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <app-footer></app-footer>
+    </div>
+</div>
