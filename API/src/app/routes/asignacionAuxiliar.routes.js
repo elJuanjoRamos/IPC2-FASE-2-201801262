@@ -1,12 +1,12 @@
 var express = require('express');
-var curso = require('../model/curso.model')
-var cursoRoute = express();
+var asignacion = require('../model/asignacionAuxiliar.model')
+var asignacionAuxiliarRoute = express();
 
 
 //METODO GET
 //get 
-cursoRoute.get('/ws/db/curso', function(req, res) {
-    curso.get(function(result) {
+asignacionAuxiliarRoute.get('/ws/db/asignacionauxiliar', function(req, res) {
+    asignacion.get(function(result) {
         if (typeof result != undefined) {
             res.json(result);
         } else {
@@ -16,9 +16,9 @@ cursoRoute.get('/ws/db/curso', function(req, res) {
 });
 
 //GET UNIC
-cursoRoute.get('/ws/db/curso/:id', function(req, res) {
+asignacionAuxiliarRoute.get('/ws/db/asignacionauxiliar/:id', function(req, res) {
     var id = req.params.id;
-    curso.select(id, function(resultado) {
+    asignacion.select(id, function(resultado) {
         if (typeof resultado !== undefined) {
             res.json(resultado);
         } else {
@@ -27,25 +27,14 @@ cursoRoute.get('/ws/db/curso/:id', function(req, res) {
     });
 });
 
-cursoRoute.get('/ws/db/cursos/activos', function(req, res) {
-    curso.getActivo(function(result) {
-        if (typeof result != undefined) {
-            res.json(result);
-        } else {
-            res.json({ messaje: "No data" });
-        }
-    });
-});
-
 //post
 
-cursoRoute.post('/ws/db/curso/', /*services.verificar,*/ function(req, res, next) {
+asignacionAuxiliarRoute.post('/ws/db/asignacionauxiliar/', /*services.verificar,*/ function(req, res, next) {
     var data = {
-        nombre: req.body.nombre,
-        codigo: req.body.codigo,
-        estado: req.body.estado
+        usuario: req.body.Usuario_idUsuario,
+        detalle: req.body.Curso_idCurso
     };
-    curso.insert(data, function(resultado) {
+    asignacion.insert(data, function(resultado) {
         if (resultado && resultado.affectedRows > 0) {
             res.json({
                 estado: true,
@@ -57,10 +46,26 @@ cursoRoute.post('/ws/db/curso/', /*services.verificar,*/ function(req, res, next
     });
 });
 
+//validar
+asignacionAuxiliarRoute.post('/ws/db/verificar/', /*services.verificar,*/ function(req, res, next) {
+    var data = {
+        Usuario_idUsuario: req.body.Usuario_idUsuario,
+        Detalle_idDetalle: req.body.Curso_idCurso
+    };
+    asignacion.verificar(data, function(resultado) {
+        if (typeof resultado !== 'undefined') {
+            res.json({ "estado": false, "mensaje": "Ya existe una asignacion con los datos proporcionados" });
+        } else {
+            res.json({ "estado": true, "mensaje": "No hay asignaciones con los datos proporcionados" });
+        }
+    });
+});
+
+
 //delete
-cursoRoute.delete('/ws/db/curso/:id', function(req, res) {
+asignacionAuxiliarRoute.delete('/ws/db/asignacionauxiliar/:id', function(req, res) {
     var id = req.params.id;
-    curso.delete(id, function(resultado) {
+    asignacion.delete(id, function(resultado) {
         if (typeof resultado !== undefined) {
             res.json(resultado);
         } else {
@@ -69,7 +74,7 @@ cursoRoute.delete('/ws/db/curso/:id', function(req, res) {
     });
 });
 //PUT
-cursoRoute.put('/ws/db/curso/:id', /*services.verificar,*/ function(req, res, next) {
+asignacionAuxiliarRoute.put('/ws/db/asignacionauxiliar/:id', /*services.verificar,*/ function(req, res, next) {
     var c = req.params.id;
     var data = {
         nombre: req.body.nombre,
@@ -78,7 +83,7 @@ cursoRoute.put('/ws/db/curso/:id', /*services.verificar,*/ function(req, res, ne
         idCurso: c,
 
     }
-    curso.update(data, function(resultado) {
+    asignacion.update(data, function(resultado) {
         if (resultado && resultado.affectedRows > 0) {
             res.json({
                 estado: true,
@@ -97,8 +102,8 @@ cursoRoute.put('/ws/db/curso/:id', /*services.verificar,*/ function(req, res, ne
 
 //METODO GET SECCIONES
 //get 
-cursoRoute.get('/ws/db/seccion', function(req, res) {
-    curso.getSecciones(function(result) {
+asignacionAuxiliarRoute.get('/ws/db/seccion', function(req, res) {
+    asignacion.getSecciones(function(result) {
         if (typeof result != undefined) {
             res.json(result);
         } else {
@@ -107,4 +112,4 @@ cursoRoute.get('/ws/db/seccion', function(req, res) {
     });
 });
 
-module.exports = cursoRoute;
+module.exports = asignacionAuxiliarRoute;

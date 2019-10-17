@@ -89,8 +89,16 @@
                 </div>
             </div>
         </div>
+
         <div class="col-lg-7">
             <div class="card shadow">
+                <div *ngIf="estado == false" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                    <span class="alert-text"><strong>Atencion!</strong> {{ mensaje }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">×</span>
+                                        </button>
+                </div>
                 <div class="card-header border-0">
                     <h3 class="mb-0">Cursos Registrados</h3>
                 </div>
@@ -131,7 +139,8 @@
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                                             <a class="dropdown-item">Detalles</a>
                                             <a *ngIf="u.estado == 0" class="dropdown-item" (click)='habilitar(u)'>Habilitar</a>
-                                            <a *ngIf="u.estado == 1" class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idCurso)'>Deshabilitar</a>
+                                            <a *ngIf="u.estado == 0" class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idCurso)'>Eliminar</a>
+                                            <a *ngIf="u.estado == 1" class="dropdown-item" (click)='deshabilitar(u)'>Deshabilitar</a>
                                             <a [routerLink]="['/home/dashboard/adm/admin/cursos/', u.idCurso]" class="dropdown-item">Editar</a>
                                         </div>
                                     </div>
@@ -170,7 +179,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()' data-dismiss="modal">Deshabilitar</button>
+                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()' data-dismiss="modal">Eliminar</button>
                         <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>

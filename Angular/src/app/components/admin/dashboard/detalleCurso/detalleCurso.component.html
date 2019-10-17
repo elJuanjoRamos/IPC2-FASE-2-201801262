@@ -1,0 +1,120 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Detalle de Cursos </h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Dashboard</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Detalle de Cursos</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a [routerLink]="['/home/dashboard/adm/admin/detallecurso/nuevo']" class="btn btn-sm btn-neutral">Gestionar un curso</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Cursos del sistema</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-flush" id="datatable-basic">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">ID#</th>
+                                <th scope="col">Curso</th>
+                                <th scope="col">Codigo</th>
+                                <th scope="col">Semestre</th>
+                                <th scope="col">Año</th>
+                                <th scope="col">Horario</th>
+                                <th scope="col">Seccion</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="arrayDetalle.lengt !=0">
+                            <tr *ngFor="let u of arrayDetalle">
+                                <th scope="row">
+                                    {{u.idDetalleCurso}}
+                                </th>
+                                <td>
+                                    {{u.nombre}}
+                                </td>
+                                <td>
+                                    {{u.codigo}}
+                                </td>
+                                <td>
+                                    {{u.semestre}}
+
+                                </td>
+                                <td>
+                                    {{u.anio}}
+                                </td>
+                                <td>
+                                    {{u.horaInicio}} to {{ u.horaFin }}
+                                </td>
+                                <td>
+                                    {{u.seccion}}
+                                </td>
+                                <td class="text-right">
+                                    <div class="dropdown">
+                                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                                            <a class="dropdown-item">Detalles</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idDetalleCurso)'>Eliminar</a>
+                                            <a [routerLink]="['/home/dashboard/adm/admin/detallecurso/', u.idDetalleCurso]" class="dropdown-item">Editar</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                        <tfoot>
+                            <tfoot>
+                                <div>
+                                </div>
+                            </tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+            <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                <div class="modal-content bg-gradient-danger">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="modal-title-notification">Tu atencion es requerida</h6>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="py-3 text-center">
+                            <i class="ni ni-bell-55 ni-3x"></i>
+                            <h4 class="heading mt-4">Un detalle esta por ser eliminado</h4>
+                            <p>Si elimina este detalle, los auxiliares que tengan asignado el curso, asi como los estudiantes se veran afectados.</p>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()' data-dismiss="modal">Eliminar</button>
+                        <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

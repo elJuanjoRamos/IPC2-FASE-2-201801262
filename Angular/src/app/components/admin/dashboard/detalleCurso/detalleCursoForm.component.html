@@ -1,0 +1,130 @@
+<div class="main-content" id="panel">
+    <!-- Header -->
+    <div class="header bg-primary pb-6">
+        <div class="container-fluid">
+            <div class="header-body">
+                <div class="row align-items-center py-4">
+                    <div class="col-lg-6 col-7">
+                        <h6 class="h2 text-white d-inline-block mb-0">Formulario Usuario</h6>
+                        <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                            <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                                <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                                <li class="breadcrumb-item"><a>Dashboards</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Usuario</li>
+                                <li class="breadcrumb-item active" aria-current="page">Nuevo Usuario</li>
+
+
+                            </ol>
+                        </nav>
+                    </div>
+                    <div class="col-lg-6 col-5 text-right">
+                        <a [routerLink]="['/home/dashboard/adm/admin/detallecurso']" class="btn btn-sm btn-neutral">Regresar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card-wrapper">
+                    <!-- Form controls -->
+                    <div class="card">
+                        <!-- Card header -->
+                        <div class="card-header">
+                            <h3 class="mb-0">Formulario de Detalle Curso</h3>
+                        </div>
+                        <!-- Card body -->
+                        <div *ngIf="loginForm" class="card-body">
+                            <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="" class="form-horizontal">
+                                <div class="form-group">
+                                    <label class="form-control-label" for="Curso_idCurso">Cursos activos</label>
+                                    <select formControlName="Curso_idCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Curso_idCurso.errors }">
+                                        <option *ngFor="let u of arrayCursos" value="{{u.idCurso}}"  >{{ u.nombre }}</option>
+                                     </select>
+                                    <div *ngIf="submitted && f.Curso_idCurso.errors" class="invalid-feedback">
+                                        <div *ngIf="f.Curso_idCurso.errors.required">El curso es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="seccion">Seccion</label>
+                                    <select formControlName="seccion" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
+                                        <option *ngFor="let u of arraySecciones"  value="{{u.nombre}}"  >{{ u.nombre }}</option>
+                                     </select>
+                                    <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
+                                        <div *ngIf="f.seccion.errors.required">La seccion es requerida</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="semestre">Semestre</label>
+                                    <select formControlName="semestre" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.semestre.errors }">
+                                            <option value="Primer Semestre">Primero</option>
+                                            <option value="Segundo Semestre">Segundo</option>
+                                            <option value="Vacaciones Junio">Vacaciones Junio</option>
+                                            <option value="Vacaciones Diciembre">Vacaciones Diciembre</option>
+                                         </select>
+                                    <div *ngIf="submitted && f.semestre.errors" class="invalid-feedback">
+                                        <div *ngIf="f.semestre.errors.required">El Semestre es requerido</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-control-label" for="anio">Año</label>
+                                    <input type="text" formControlName="anio" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.anio.errors }" />
+                                    <div *ngIf="submitted && f.anio.errors" class="invalid-feedback">
+                                        <div *ngIf="f.anio.errors.required">El Año es requerido</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="example3cols1Input">Hora inicio</label>
+                                                <input type="time" formControlName="horaInicio" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.horaInicio.errors }" />
+                                                <div *ngIf="submitted && f.horaInicio.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.horaInicio.errors.required">La hora de inicio es requerida</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="horaFin">Hora finalizacion</label>
+                                                <input type="time" formControlName="horaFin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.horaFin.errors }" />
+                                                <div *ngIf="submitted && f.horaFin.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.horaFin.errors.required">La hora de finalizacion es requerida</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div *ngIf="estado == false" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                                        <span class="alert-text"><strong>Atencion!</strong> {{ mensaje }}</span>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                  <span aria-hidden="true">×</span>
+                                                </button>
+                                    </div>
+                                    <div class="col-sm-offset-2 col-sm-10">
+                                        <button type="button" (click)="onSubmit()" class="btn btn-info">
+                                                <span  class="spinner-border spinner-border-sm mr-1"></span>
+                                                Aceptar
+                                        </button>
+                                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <app-footer></app-footer>
+    </div>
+</div>

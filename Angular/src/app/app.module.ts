@@ -22,12 +22,19 @@ import { FooterComponent } from './components/admin/footer/footer.component';
 import { NavBarComponent } from './components/admin/navbar/navbar.component';
 import { UsuarioFormComponent } from './components/admin/dashboard/usuarios/usuarioForm.component';
 import { CursoComponent } from './components/admin/dashboard/cursos/cursos.component';
+import { DetalleCursoComponent } from './components/admin/dashboard/detalleCurso/detalleCurso.component';
+import { DetalleCursoFormComponent } from './components/admin/dashboard/detalleCurso/detalleCursoForm.component';
+import { AsignacionAuxiliar } from './components/admin/dashboard/asigAuxiliar/asignacionAuxiliar.component';
+import { AsignacionForm } from './components/admin/dashboard/asigAuxiliar/asignacionForm.component';
 
 
 
 //servicios
 import { UsuarioService } from './services/usuario.service';
 import { CursoService } from './services/curso.service';
+import { DetalleCursoService } from './services/detalleCurso.service';
+import { AsignacionAuxiliarService } from './services/asignacionAuxiliar.service';
+import { AuthenticationService } from './services/authentication.service';
 
 
 @NgModule({
@@ -44,6 +51,10 @@ import { CursoService } from './services/curso.service';
     UsuarioFormComponent,
     NavBarComponent,
     CursoComponent,
+    DetalleCursoComponent,
+    DetalleCursoFormComponent,
+    AsignacionAuxiliar,
+    AsignacionForm,
     //Esto es estudiante
     EstudianteComponent,
     DashEstudianteComponent,
@@ -61,7 +72,10 @@ import { CursoService } from './services/curso.service';
   ],
   providers: [
     UsuarioService,
-    CursoService
+    CursoService,
+    DetalleCursoService,
+    AsignacionAuxiliarService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

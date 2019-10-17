@@ -29,13 +29,18 @@ app.use(function(req, res, next) {
 var rolRoute = require('./app/routes/rol.routes');
 var usuarioRoute = require('./app/routes/usuario.routes');
 var cursoRoute = require('./app/routes/curso.routes');
-
+var detcursoRoute = require('./app/routes/detalleCurso.routes');
+var asigAuxiliar = require('./app/routes/asignacionAuxiliar.routes')
+var authRoute = require('./app/routes/authenticate.routes');
 
 //middlewares
+
+app.use('/', authRoute);
 app.use(uri, rolRoute);
 app.use(uri, usuarioRoute);
 app.use(uri, cursoRoute);
-
+app.use(uri, detcursoRoute);
+app.use(uri, asigAuxiliar);
 
 app.listen(port, function() {
     console.log('El servidor corre en el puerto:' + port)

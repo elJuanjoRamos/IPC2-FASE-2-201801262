@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { AuthenticationService } from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
         private formBuilder: FormBuilder,
         private route: ActivatedRoute,
         private router: Router,
+        private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -39,16 +41,7 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    this.usuario = this.loginForm.value;
-    if( this.usuario.username === 'admin') {
-      this.router.navigate(['/home/dashboard/adm/admin']);
-
-    } else if ( this.usuario.username === 'estudiante' ) {
-      this.router.navigate(['/home/dashboard/est/estudiante']);
-    } else if ( this.usuario.username === 'auxiliar'){
-      this.router.navigate(['/home/dashboard/aux/auxiliar']);
-    }
-    //this.authenticationService.login(this.loginForm.value);
+    this.authenticationService.login(this.loginForm.value);
   }
 
 }

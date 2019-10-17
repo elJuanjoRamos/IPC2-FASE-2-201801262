@@ -26,7 +26,16 @@ usuarioRoute.get('/ws/db/usuario/:idUsuario', function(req, res) {
         }
     });
 });
-
+//get auxiliares
+usuarioRoute.get('/ws/db/auxiliar', function(req, res) {
+    usuario.getAux(function(result) {
+        if (typeof result != undefined) {
+            res.json(result);
+        } else {
+            res.json({ messaje: "No data" });
+        }
+    });
+});
 
 //post
 

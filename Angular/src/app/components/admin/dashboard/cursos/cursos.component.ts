@@ -20,6 +20,9 @@ export class CursoComponent implements OnInit {
     filter:any;
     p:any;
     varAuxiliar:any;
+    estado: any;
+    mensaje: any;
+    info: any;
   constructor(private service: CursoService,  private formBuilder: FormBuilder, 
     private activatedRoute: ActivatedRoute, private router: Router) {
         this.activatedRoute.params.subscribe(params => {
@@ -91,6 +94,9 @@ export class CursoComponent implements OnInit {
   borrar(id: any) {
     this.service.delete(id)
     .subscribe(res => {
+      var info = JSON.parse(JSON.stringify(res));
+      this.estado = info.estado;
+      this.mensaje = info.mensaje;
       this.inicializar();
     });
   }
@@ -103,6 +109,16 @@ export class CursoComponent implements OnInit {
     this.borrar(this.varAuxiliar);
   }
 
+  deshabilitar(curso: any){
+    var data = {
+        nombre:curso.nombre,
+        codigo: curso.codigo,
+        estado: 0
+    };
+    this.service.put(data, curso.idCurso).subscribe(data => {
+        this.inicializar();
+    });
+  }
   habilitar(curso: any){
     var data = {
         nombre:curso.nombre,

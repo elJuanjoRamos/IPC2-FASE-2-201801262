@@ -30,7 +30,21 @@ USUARIO.select = function(idUsuario, callback) {
     }
 }
 
-//post
+//Trae a todos los auxiliares
+
+USUARIO.getAux = function(calback) {
+        if (database) {
+            var query = 'SELECT * FROM USUARIO WHERE Rol_idRol = 2';
+            database.query(query, function(error, resultado) {
+                if (error) {
+                    throw error;
+                } else {
+                    calback(resultado)
+                }
+            });
+        }
+    }
+    //post
 USUARIO.insert = function(data, callback) {
     if (database) {
         var query = 'CALL insert_user(?, ?, ?, ?, ?)';
@@ -76,5 +90,21 @@ USUARIO.update = function(data, callback) {
     }
 }
 
+USUARIO.login = function(data, callback) {
+    if (database) {
+        var consulta = 'CALL autenticar(?, ?)';
+        database.query(consulta, [data.username, data.password], function(error, resultado) {
+            if (error) {
+                throw error;
+            } else {
+                if (resultado[0].length > 0) {
+                    callback(resultado[0]);
+                } else {
+                    callback(0);
+                }
+            }
+        });
+    }
+}
 
 module.exports = USUARIO;

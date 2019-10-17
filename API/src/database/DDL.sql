@@ -65,3 +65,60 @@ CREATE TABLE IF NOT EXISTS `SECCION` (
   PRIMARY KEY (`idSeccion`))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `mydb`.`DETALLECURSO`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `DetalleCurso` ;
+CREATE TABLE IF NOT EXISTS `DetalleCurso` (
+  `idDetalleCurso` INT NOT NULL AUTO_INCREMENT,
+  `semestre` VARCHAR(45) NOT NULL,
+  `anio` VARCHAR(45) NOT NULL,
+  `horaInicio` VARCHAR(50) NOT NULL,
+  `horaFin` VARCHAR(50) NOT NULL,
+  `Curso_idCurso` INT NOT NULL,
+  `seccion` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`idDetalleCurso`),
+  INDEX `fk_DetalleCurso_Curso_idx` (`Curso_idCurso` ASC),
+  CONSTRAINT `fk_DetalleCurso_Curso`
+    FOREIGN KEY (`Curso_idCurso`)
+    REFERENCES `Curso` (`idCurso`)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE)
+ENGINE = InnoDB;
+
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`DETALLECURSO`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `AsignacionAuxiliar` ;
+CREATE TABLE IF NOT EXISTS `AsignacionAuxiliar` (
+  `idAsignacionAuxiliar` INT NOT NULL AUTO_INCREMENT,
+  `Usuario_idUsuario` INT NOT NULL,
+  `DetalleCurso_idDetalleCurso` INT NOT NULL,
+  PRIMARY KEY (`idAsignacionAuxiliar`),
+  INDEX `fk_AsignacionAuxiliar_Usuario_idx` (`Usuario_idUsuario` ASC),
+  CONSTRAINT `fk_AsignacionAuxiliar_Usuario`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `Usuario` (`idUsuario`)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    INDEX `fk_AsignacionAuxiliar_DetalleCurso_idx` (`DetalleCurso_idDetalleCurso` ASC),
+  CONSTRAINT `fk_AsignacionAuxiliar_DetalleCurso`
+    FOREIGN KEY (`DetalleCurso_idDetalleCurso`)
+    REFERENCES `DetalleCurso` (`idDetalleCurso`)
+    ON UPDATE CASCADE
+    ON DELETE CASCADE)
+ENGINE = InnoDB;
+
+
+
+
+
+DELIMITER //
+CREATE PROCEDURE autenticar (IN nombre VARCHAR(45), IN passw VARCHAR(45))
+BEGIN
+SELECT * FROM Usuario WHERE username = nombre AND pass = passw;  
+END //
+DELIMITER ;
