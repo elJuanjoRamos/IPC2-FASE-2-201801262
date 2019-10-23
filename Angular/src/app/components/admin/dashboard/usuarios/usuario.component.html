@@ -55,15 +55,15 @@
                                     {{u.username}}
                                 </td>
                                 <td>
-                                    {{u.pass}}
+                                    {{u.password}}
                                 </td>
-                                <td *ngIf="u.Rol_idRol == 1">
+                                <td *ngIf="u.idTipoUsuario == 1">
                                     <span class="badge badge-success">Administrador</span>
                                 </td>
-                                <td *ngIf="u.Rol_idRol == 2">
+                                <td *ngIf="u.idTipoUsuario == 2">
                                     <span class="badge badge-info">Auxiliar</span>
                                 </td>
-                                <td *ngIf="u.Rol_idRol == 3">
+                                <td *ngIf="u.idTipoUsuario == 3">
                                     <span class="badge badge-warning">Estudiante</span>
                                 </td>
                                 <td class="text-right">

@@ -1,0 +1,48 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Cards</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Components</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Cards</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a href="#" class="btn btn-sm btn-neutral">New</a>
+                    <a href="#" class="btn btn-sm btn-neutral">Filters</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--6">
+    <div class="row card-wrapper">
+        <div *ngFor="let u of arrayCursos" class="col-lg-4">
+            <!-- Basic with list group -->
+            <div class="card">
+                <!-- Card image -->
+                <img class="card-img-top" src="https://demos.creative-tim.com/argon-dashboard-pro/assets/img/theme/img-1-1000x600.jpg" alt="Image placeholder">
+                <!-- List group -->
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Nombre: {{ u.nombre }} </li>
+                    <li class="list-group-item">Seccion: {{ u.seccion }}</li>
+                    <li class="list-group-item">Horario: {{u.horaInicio}} to {{u.horaFin}}</li>
+                </ul>
+                <!-- Card body -->
+                <div class="card-body">
+                    <h3 class="card-title mb-3">Codigo: {{ u.codigo }}</h3>
+                    <a (click)='redireccionar(u.idAsignacionAuxiliar)' style="color:white" class="btn btn-primary">Gestionar</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <app-footer></app-footer>
+</div>

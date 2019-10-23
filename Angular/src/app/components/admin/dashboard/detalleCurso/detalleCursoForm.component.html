@@ -39,21 +39,21 @@
                         <div *ngIf="loginForm" class="card-body">
                             <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="" class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="Curso_idCurso">Cursos activos</label>
-                                    <select formControlName="Curso_idCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Curso_idCurso.errors }">
+                                    <label class="form-control-label" for="idCurso">Cursos activos</label>
+                                    <select formControlName="idCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idCurso.errors }">
                                         <option *ngFor="let u of arrayCursos" value="{{u.idCurso}}"  >{{ u.nombre }}</option>
                                      </select>
-                                    <div *ngIf="submitted && f.Curso_idCurso.errors" class="invalid-feedback">
-                                        <div *ngIf="f.Curso_idCurso.errors.required">El curso es requerido</div>
+                                    <div *ngIf="submitted && f.idCurso.errors" class="invalid-feedback">
+                                        <div *ngIf="f.idCurso.errors.required">El curso es requerido</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" for="seccion">Seccion</label>
-                                    <select formControlName="seccion" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.seccion.errors }">
-                                        <option *ngFor="let u of arraySecciones"  value="{{u.nombre}}"  >{{ u.nombre }}</option>
+                                    <label class="form-control-label" for="idSeccion">idSeccion</label>
+                                    <select formControlName="idSeccion" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idSeccion.errors }">
+                                        <option *ngFor="let u of arraySecciones"  value="{{u.idSeccion}}"  >{{ u.nombre }}</option>
                                      </select>
-                                    <div *ngIf="submitted && f.seccion.errors" class="invalid-feedback">
-                                        <div *ngIf="f.seccion.errors.required">La seccion es requerida</div>
+                                    <div *ngIf="submitted && f.idSeccion.errors" class="invalid-feedback">
+                                        <div *ngIf="f.idSeccion.errors.required">La idSeccion es requerida</div>
                                     </div>
                                 </div>
                                 <div class="form-group">

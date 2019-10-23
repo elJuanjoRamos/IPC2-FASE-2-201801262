@@ -6,7 +6,7 @@ import { Curso } from '../api/models/curso.model';
 
 @Injectable(/*{ providedIn: 'root' }*/)
 export class CursoService {
-    URI = 'http://localhost:3000/api/v1/ws/db';
+    URI = 'http://localhost:3000/api';
     headers = new HttpHeaders({'Content-Type': 'application/json','Authorization': localStorage.getItem('token')});
 
     constructor(private http: HttpClient) { }

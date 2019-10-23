@@ -36,21 +36,21 @@
                         <div *ngIf="loginForm" class="card-body">
                             <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="" class="form-horizontal">
                                 <div class="form-group">
-                                    <label class="form-control-label" for="Usuario_idUsuario">Auxiliar</label>
-                                    <select formControlName="Usuario_idUsuario" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Usuario_idUsuario.errors }">
+                                    <label class="form-control-label" for="idUsuario">Auxiliar</label>
+                                    <select formControlName="idUsuario" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idUsuario.errors }">
                                         <option *ngFor="let u of arrayUsuarios"  value="{{u.idUsuario}}">{{u.nombre}}</option>
                                      </select>
-                                    <div *ngIf="submitted && f.Usuario_idUsuario.errors" class="invalid-feedback">
-                                        <div *ngIf="f.Usuario_idUsuario.errors.required">El auxiliar es requerido</div>
+                                    <div *ngIf="submitted && f.idUsuario.errors" class="invalid-feedback">
+                                        <div *ngIf="f.idUsuario.errors.required">El auxiliar es requerido</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" for="Curso_idCurso">Curso</label>
-                                    <select formControlName="Curso_idCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Curso_idCurso.errors }">
-                                        <option *ngFor="let u of arrayDetalles"  value="{{u.idDetalleCurso}}">{{u.nombre}}</option>
+                                    <label class="form-control-label" for="idDetalleCurso">Curso</label>
+                                    <select formControlName="idDetalleCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idDetalleCurso.errors }">
+                                        <option *ngFor="let u of arrayDetalles"  value="{{u.idDetalleCurso}}">Curso: {{u.nombre}}/ Seccion: {{u.seccion}} / Horario: {{u.horaInicio}} to {{u.horaFin}} / Semestre: {{u.semestre}}</option>
                                      </select>
-                                    <div *ngIf="submitted && f.Curso_idCurso.errors" class="invalid-feedback">
-                                        <div *ngIf="f.Curso_idCurso.errors.required">El curso es requerido</div>
+                                    <div *ngIf="submitted && f.idDetalleCurso.errors" class="invalid-feedback">
+                                        <div *ngIf="f.idDetalleCurso.errors.required">El curso es requerido</div>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -70,7 +70,7 @@
                                                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                                 Validar
                                         </button>
-                                        <button *ngIf="validar ==true" type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                        <button *ngIf="true" type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
                                             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                                             Aceptar
                                     </button>

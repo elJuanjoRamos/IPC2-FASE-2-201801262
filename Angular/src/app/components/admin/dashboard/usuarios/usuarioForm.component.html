@@ -67,14 +67,29 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" for="Rol_idRol">Rol de Usuario</label>
-                                    <select formControlName="Rol_idRol" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Rol_idRol.errors }">
+                                    <label class="form-control-label" for="dpi">Dpi</label>
+                                    <input type="number" formControlName="dpi" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.dpi.errors }" />
+                                    <div *ngIf="submitted && f.dpi.errors" class="invalid-feedback">
+                                        <div *ngIf="f.dpi.errors.required">El dpi es requerido</div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-control-label" for="carnet">Carnet</label>
+                                    <input type="number" formControlName="carnet" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.carnet.errors }" />
+                                    <div *ngIf="submitted && f.carnet.errors" class="invalid-feedback">
+                                        <div *ngIf="f.carnet.errors.required">El carnet es requerido</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-control-label" for="idTipoUsuario">Rol de Usuario</label>
+                                    <select formControlName="idTipoUsuario" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idTipoUsuario.errors }">
                                         <option value="1">Administrador</option>
                                         <option value="2">Auxiliar</option>
                                         <option value="3">Estudiante</option>
                                      </select>
-                                    <div *ngIf="submitted && f.Rol_idRol.errors" class="invalid-feedback">
-                                        <div *ngIf="f.Rol_idRol.errors.required">Rol es requerido</div>
+                                    <div *ngIf="submitted && f.idTipoUsuario.errors" class="invalid-feedback">
+                                        <div *ngIf="f.idTipoUsuario.errors.required">Rol es requerido</div>
                                     </div>
                                 </div>
                                 <div class="form-group">

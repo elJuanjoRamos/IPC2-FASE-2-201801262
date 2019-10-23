@@ -41,8 +41,8 @@ export class DetalleCursoFormComponent implements OnInit {
             this.uri = params["id"];
             if (this.uri === "nuevo") {
                 this.loginForm = this.formBuilder.group({
-                    Curso_idCurso: ['', Validators.required],
-                    seccion: ['', Validators.required],
+                    idCurso: ['', Validators.required],
+                    idSeccion: ['', Validators.required],
                     semestre: ['', Validators.required],
                     anio: ['', Validators.required],
                     horaInicio: ['', Validators.required],
@@ -54,8 +54,8 @@ export class DetalleCursoFormComponent implements OnInit {
                   this.detalle = det;
                   this.validar = true;
                   this.loginForm = new FormGroup({
-                    'Curso_idCurso': new FormControl(this.detalle.Curso_idCurso, Validators.required),
-                    'seccion': new FormControl(this.detalle.seccion, Validators.required),
+                    'idCurso': new FormControl(this.detalle.idCurso, Validators.required),
+                    'idSeccion': new FormControl(this.detalle.idSeccion, Validators.required),
                     'semestre': new FormControl(this.detalle.semestre, Validators.required),
                     'anio': new FormControl(this.detalle.anio, Validators.required),
                     'horaInicio': new FormControl(this.detalle.horaInicio,  Validators.required),
@@ -77,10 +77,10 @@ export class DetalleCursoFormComponent implements OnInit {
             this.service.post(this.loginForm.value)
                 .subscribe(res => {
                     this.informacion = JSON.parse(JSON.stringify(res));
-                    if ( this.informacion.estado === true ){
+                    if ( this.informacion.ok === true ){
                             this.router.navigate(['/home/dashboard/adm/admin/detallecurso']);
                         } else {
-                            this.estado = this.informacion.estado;
+                            this.estado = this.informacion.ok;
                             this.mensaje = this.informacion.mensaje;
                         }
                 });
@@ -88,10 +88,10 @@ export class DetalleCursoFormComponent implements OnInit {
             this.service.put(this.loginForm.value, this.uri)
                 .subscribe(res => {
                     this.informacion = JSON.parse(JSON.stringify(res));
-                    if ( this.informacion.estado === true ){
+                    if ( this.informacion.ok === true ){
                             this.router.navigate(['/home/dashboard/adm/admin/detallecurso']);
                         } else {
-                            this.estado = this.informacion.estado;
+                            this.estado = this.informacion.ok;
                             this.mensaje = this.informacion.mensaje;
                         }
                 });

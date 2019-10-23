@@ -20,8 +20,8 @@ export class UsuarioComponent implements OnInit {
 
   inicializarData() {
     this.service.getAll().subscribe(data => {
+        console.log(data);
         this.arrayUsuarios = data;
-        this.items = Array(this.arrayUsuarios.length).fill(0).map((x, i) => ({ id: (i + 1), name: `Item ${i + 1}`}));
     });
   }
   onChangePage(pageOfItems: Array<any>) {

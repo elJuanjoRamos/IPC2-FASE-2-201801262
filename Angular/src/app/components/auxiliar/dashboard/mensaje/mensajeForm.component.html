@@ -1,0 +1,94 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Mensaje</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Auxiliar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Nuevo Mensaje</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a [routerLink]="['/home/dashboard/aux/auxiliar/mensaje/']" class="btn btn-sm btn-neutral">Regresar</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header border-0">
+                    <h3 class="mb-0">Nuevo mensaje</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Article Content-->
+                        <div class="col-lg-12">
+                            <div class="panel panel-default">
+                                <div *ngIf="loginForm" class="panel-body">
+                                    <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="">
+                                        <label class="form-control-label" for="Usuario_idUsuario">Destinatario</label>
+                                        <select formControlName="Usuario_idUsuario" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.Usuario_idUsuario.errors }">
+                                                <option *ngFor="let u of usuarios"  value="{{u.idUsuario}}">{{u.nombre}}</option>
+                                            </select>
+                                        <div *ngIf="submitted && f.Usuario_idUsuario.errors" class="invalid-feedback">
+                                            <div *ngIf="f.Usuario_idUsuario.errors.required">El destinatario es requerido</div>
+                                        </div>
+                                        <br>
+                                        <input type="text" placeholder="asunto" formControlName="asunto" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.asunto.errors }">
+                                        <div *ngIf="submitted && f.asunto.errors" class="invalid-feedback">
+                                            <div *ngIf="f.asunto.errors.required">El asunto es requerido</div>
+                                        </div>
+                                        <br>
+                                        <label for="">Mensaje</label>
+                                        <textarea formControlName="mensaje" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.mensaje.errors }" style="overflow:scroll; height:250px;max-height:250px" contenteditable="true"></textarea>
+                                        <div *ngIf="submitted && f.mensaje.errors" class="invalid-feedback">
+                                            <div *ngIf="f.mensaje.errors.required">El mensaje es requerido</div>
+                                        </div>
+                                        <div class="card">
+                                            <!-- Card header -->
+                                            <div class="card-header">
+                                                <h3 class="mb-0">Archivo</h3>
+                                            </div>
+                                            <!-- Card body -->
+                                            <div class="card-body">
+                                                <div class="custom-file">
+                                                    <input type="file" id="file" (change)="handleFileInput($event.target.files)" class="custom-file-input" id="customFileLang" lang="en">
+                                                    <label class="custom-file-label" for="customFileLang">Select file</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <br>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                            Aceptar
+                                                    </button>
+                                                <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+
+</div>

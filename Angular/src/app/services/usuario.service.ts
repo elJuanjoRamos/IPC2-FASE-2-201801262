@@ -6,7 +6,7 @@ import { Usuario } from '../api/models/usuario.model';
 
 @Injectable(/*{ providedIn: 'root' }*/)
 export class UsuarioService {
-    URI = 'http://localhost:3000/api/v1/ws/db';
+    URI = 'http://localhost:3000/api/';
     headers = new HttpHeaders({'Content-Type': 'application/json','Authorization': localStorage.getItem('token')});
 
     constructor(private http: HttpClient) { }
@@ -27,6 +27,11 @@ export class UsuarioService {
                 return user;
             }));
     }
+    getEstudiante(id: any) {
+        return this.http.get<any[]>(`${this.URI}/estudiante/${id}`).pipe(map(user => {
+                return user;
+            }));
+    }
 
     delete(id:any) {
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token')});
@@ -38,11 +43,6 @@ export class UsuarioService {
         let data = JSON.stringify(usuario);
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token')});
         return this.http.post(`${this.URI}/usuario/`, data, { headers }).pipe(map(user => {
-            return user;
-        }));
-    }
-    aut(username: string) {
-        return this.http.get(`${this.URI}/usuario/aut/${username}`).pipe(map(user => {
             return user;
         }));
     }

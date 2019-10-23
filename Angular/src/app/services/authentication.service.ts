@@ -23,7 +23,7 @@ export class AuthenticationService {
 
 
     login(usuario: any) {
-        let uriUsuario: string = 'http://localhost:3000/auth/';
+        let uriUsuario: string = 'http://localhost:3000/api/auth/';
         let head = new HttpHeaders();
         head.append('Content-Type', 'application/json');
 
@@ -31,18 +31,18 @@ export class AuthenticationService {
             username: usuario.username,
             password: usuario.password
         };
-        console.log(data);
         this.http.post(uriUsuario, data, { headers: head })
             .subscribe(user => {
+                console.log(user[0]);
                 let res = {
-                    'results': JSON.stringify(user),
-                    'json': () => { return user; }
+                    'results': JSON.stringify(user[0]),
+                    'json': () => { return user[0]; }
                 };
-                let token = JSON.parse(JSON.stringify(res.json())).token;
-                let rol = JSON.parse(JSON.stringify(res.json())).Rol_idRol;
-                if (token) {
+                
+                let rol = JSON.parse(JSON.stringify(res.json())).idTipoUsuario;
+                //if (token) {
                     console.log("Si existe el token");
-                    localStorage.setItem('token', token);
+                    //localStorage.setItem('token', token);
                     localStorage.setItem('id', JSON.parse(JSON.stringify(res.json())).idUsuario);
 
 
@@ -53,10 +53,10 @@ export class AuthenticationService {
                     } else if (rol === 3) {
                         this.router.navigate(['/home/dashboard/est/estudiante']);
                     }
-                } else {
+                /*} else {
                     console.log("No existen token");
                     return false;
-                }
+                }*/
             }, error => {
                 console.log(error.text());
             });

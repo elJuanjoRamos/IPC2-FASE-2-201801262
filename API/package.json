@@ -1,21 +1,26 @@
 {
-  "name": "api",
+  "name": "back-proyecto",
   "version": "1.0.0",
-  "description": "Fase 2 IPC2",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/app.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "html": "copyfiles --up 1 src/public/*.html dist",
+    "build": "tsc && npm run html",
+    "dev": "nodemon dist/index"
   },
-  "author": "Juan José Ramos",
+  "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/body-parser": "^1.17.1",
     "body-parser": "^1.19.0",
-    "ejs": "^2.7.1",
+    "copyfiles": "^2.1.1",
     "express": "^4.17.1",
-    "morgan": "^1.9.1",
     "mysql": "^2.17.1"
   },
   "devDependencies": {
-    "nodemon": "^1.19.3"
+    "@types/express": "^4.17.1",
+    "@types/mysql": "^2.15.7",
+    "nodemon": "^1.19.4"
   }
 }

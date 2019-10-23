@@ -1,0 +1,253 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Cursos</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Auxiliar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Mi curso</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card-wrapper">
+                <!-- Input groups -->
+                <div *ngIf="miCurso" class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Informacion del Curso</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        <br>
+                        <div class="text-center">
+                            <h5 class="h3">
+                                Nombre: {{miCurso.nombre}}<span class="font-weight-light"></span>
+                            </h5>
+                            <div class="h5 font-weight-300">
+                                <i class="ni location_pin mr-2"></i>Estado: Habilitado
+                            </div>
+                            <div class="h5 mt-4">
+                                <i class="ni business_briefcase-24 mr-2"></i>Codigo: {{miCurso.codigo}} - Seccion: {{miCurso.seccion}}
+                            </div>
+                            <div>
+                                <i class="ni education_hat mr-2"></i>Horario: {{miCurso.horaInicio}} to {{miCurso.horaFin}}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Actividad</h3>
+                    </div>
+                    <!-- Card body -->
+                    <div *ngIf="loginForm" class="card-body">
+                        <form [formGroup]="loginForm" role="form">
+                            <!-- Input groups with icon -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <input class="form-control" placeholder="Nombre de Actividad" type="text" formControlName="nombre" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }">
+                                            <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                                                <div *ngIf="f.nombre.errors.required">Nombre es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <input class="form-control" placeholder="Ponderacion de Actividad" type="number" formControlName="ponderacion" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.ponderacion.errors }">
+                                            <div *ngIf="submitted && f.ponderacion.errors" class="invalid-feedback">
+                                                <div *ngIf="f.ponderacion.errors.required">Ponderacion es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Hora Limite de Actividad" type="time" formControlName="horaLimite" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.horaLimite.errors }">
+                                        <div *ngIf="submitted && f.horaLimite.errors" class="invalid-feedback">
+                                            <div *ngIf="f.horaLimite.errors.required">Hora Limite es requerido</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <input class="form-control" placeholder="Fecha Limite de Actividad" type="date" formControlName="fechaLimite" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fechaLimite.errors }">
+                                        <div *ngIf="submitted && f.fechaLimite.errors" class="invalid-feedback">
+                                            <div *ngIf="f.fechaLimite.errors.required">Fecha Limite es requerido</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Input groups with icon -->
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge">
+                                            <select formControlName="conArchivo" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.conArchivo.errors }">
+                                                                <option value="0">No permitir subir Archivo</option>
+                                                                <option value="1">Permitir subir Archivo</option>
+                                                             </select>
+                                            <div *ngIf="submitted && f.conArchivo.errors" class="invalid-feedback">
+                                                <div *ngIf="f.conArchivo.errors.required">Rol es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div *ngIf="verificar" class="col-sm-offset-2 col-sm-10">
+                                    <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                Aceptar
+                                        </button>
+                                </div>
+                                <div *ngIf="verificar2" class="col-sm-offset-2 col-sm-10">
+                                    <button *ngIf="verificar2" type="button" (click)="actualizar()" [disabled]="loading" class="btn btn-info">
+                                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                    Actualizar
+                                            </button>
+                                    <button *ngIf="verificar2" type="button" (click)="cancelar()" [disabled]="loading" class="btn btn-warning">
+                                                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                                    Cancelar
+                                            </button>
+                                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+
+
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Actividades creadas</h3>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <form>
+                            <div class="table-responsive">
+                                <table class="table table-flush" id="datatable-basic">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">ID#</th>
+                                            <th scope="col">Actividad</th>
+                                            <th scope="col">Pts</th>
+                                            <th scope="col">Hora limite</th>
+                                            <th scope="col">Fecha Limite</th>
+                                            <th scope="col">Archivos</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of misActividades">
+                                            <th scope="row">
+                                                {{u.idActividad}}
+                                            </th>
+                                            <td>
+                                                {{u.nombre}}
+                                            </td>
+                                            <td>
+                                                {{u.ponderacion}}
+                                            </td>
+                                            <td>
+                                                {{u.horaLimite}}
+                                            </td>
+                                            <td>
+                                                {{u.fechaLimite}}
+                                            </td>
+                                            <td *ngIf="u.conArchivo == 1">
+                                                Si
+                                            </td>
+                                            <td *ngIf="u.conArchivo == 0">
+                                                No
+                                            </td>
+                                            <td class="table-actions">
+                                                <a (click)='cargar(u.idActividad)' class="table-action" data-toggle="tooltip" data-original-title="Edit">
+                                                    <i class="fas fa-user-edit"></i>
+                                                </a>
+                                                <a (click)="eliminar(u.idActividad)" class="table-action table-action-delete" data-toggle="tooltip" data-original-title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card-wrapper">
+                <!-- Tags -->
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <h3 class="mb-0">Estudiantes Asignados</h3>
+                    </div>
+                    <!-- Card body -->
+                    <div class="card-body">
+                        <form>
+                            <div class="table-responsive">
+                                <table class="table table-flush" id="datatable-basic">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">ID#</th>
+                                            <th scope="col">Estudiante</th>
+                                            <th scope="col">Carnet</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of misEstudiantes">
+                                            <th scope="row">
+                                                {{u.idUsuario}}
+                                            </th>
+                                            <td>
+                                                {{u.estudiante}}
+                                            </td>
+                                            <td>
+                                                {{u.carnet}}
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                    <tfoot>
+                                        <tfoot>
+                                            <div>
+                                            </div>
+                                        </tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+    <app-footer></app-footer>
+</div>

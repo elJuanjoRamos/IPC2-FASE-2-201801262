@@ -28,7 +28,7 @@
                     </div>
                     <!-- Card body -->
                     <div *ngIf="loginForm" class="card-body">
-                        <form [formGroup]="loginForm">
+                        <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="">
                             <!-- Input groups with icon -->
                             <div class="row">
                                 <div class="col-md-6">
@@ -76,8 +76,8 @@
                             <!-- Input groups with icon -->
                             <div class="row">
                                 <div class="card-body">
-                                    <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
-                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                    <button type="button" (click)="onSubmit()" class="btn btn-info">
+                                            <span class="spinner-border spinner-border-sm mr-1"></span>
                                             Aceptar
                                     </button>
                                     <button type="button" (click)="cancelar()" class="btn btn-warning">Cancelar</button>

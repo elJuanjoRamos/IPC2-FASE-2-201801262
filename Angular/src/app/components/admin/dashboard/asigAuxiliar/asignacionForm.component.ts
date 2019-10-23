@@ -35,8 +35,8 @@ export class AsignacionForm implements OnInit {
         this.uri = params["id"];
         if (this.uri === "nuevo") {
           this.loginForm = this.formBuilder.group({
-            Usuario_idUsuario: ['', Validators.required],
-            Curso_idCurso: ['', Validators.required]
+            idUsuario: ['', Validators.required],
+            idDetalleCurso: ['', Validators.required]
           });
         } else {
           /*this.service.getUsuario(params["id"])
@@ -61,6 +61,7 @@ export class AsignacionForm implements OnInit {
       });
       this.detService.getAll().subscribe(data => {
         this.arrayDetalles = data;
+        console.log(data);
       });
     }
 
@@ -75,7 +76,8 @@ export class AsignacionForm implements OnInit {
         this.loading = true;
         this.asigService.post(this.loginForm.value)
           .subscribe(res => {
-            if (res) {
+            let estado = JSON.parse(JSON.stringify(res));
+            if (estado.ok) {
               this.router.navigate(['/home/dashboard/adm/admin/asignacionauxiliar']);
             }
           });
