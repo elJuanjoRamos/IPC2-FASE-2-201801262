@@ -7,6 +7,8 @@ import { DetalleCursoComponent } from './dashboard/detalleCurso/detalleCurso.com
 import { DetalleCursoFormComponent } from './dashboard/detalleCurso/detalleCursoForm.component';
 import { AsignacionAuxiliar } from './dashboard/asigAuxiliar/asignacionAuxiliar.component';
 import { AsignacionForm } from './dashboard/asigAuxiliar/asignacionForm.component';
+import { DesasignacionComponent } from './dashboard/desasignacion/desasignacion.component';
+import { TicketAdmComponent } from './dashboard/ticket/ticketadm.component';
 
 
 
@@ -19,6 +21,8 @@ export const admin_routes: Routes = [
   { path: 'admin/detallecurso/:id', component: DetalleCursoFormComponent },
   { path: 'admin/asignacionauxiliar', component: AsignacionAuxiliar },
   { path: 'admin/asignacionauxiliar/:id', component: AsignacionForm },
+  { path: 'admin/desasignacion', component: DesasignacionComponent },
+  { path: 'admin/ticket', component: TicketAdmComponent },
   {path: '**', pathMatch: 'full', redirectTo: 'admin'}
 ];
 

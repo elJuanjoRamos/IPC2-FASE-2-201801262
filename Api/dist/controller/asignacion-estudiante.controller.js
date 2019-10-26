@@ -16,6 +16,16 @@ var AsignacionEstudianteController = /** @class */ (function() {
                 }
             });
         };
+        this.getAllSolicitud = function(req, res) {
+            var query = "\n  CALL SP_GETSolicitudDesasig(); \n ";
+            mysql_1.default.getQuery(query, function(err, data) {
+                if (err) {
+                    res.json([]);
+                } else {
+                    res.json(data[0]);
+                }
+            });
+        };
         this.getSingle = function(req, res) {
             var query = "\n     select concat(Usuario.nombre, ' ' ,Usuario.apellido) as aux, Curso.nombre, Curso.codigo, Curso.estado, DetalleCurso.horaInicio, DetalleCurso.horaFin, Seccion.nombre as seccion FROM AsignacionAuxiliar       \n INNER JOIN Usuario ON AsignacionAuxiliar.idUsuario = Usuario.idUsuario\n INNER JOIN DetalleCurso ON AsignacionAuxiliar.idDetalleCurso = AsignacionAuxiliar.idDetalleCurso \n INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso \n  INNER JOIN Seccion ON DetalleCurso.idSeccion = Seccion.idSeccion \n WHERE idAsignacionAuxiliar = ?          ";
             var body = {
@@ -102,7 +112,26 @@ var AsignacionEstudianteController = /** @class */ (function() {
         };
         this.delete = function(req, res) {
             var id = req.params.id;
-            var query = "\n            DELETE FROM AsignacionAuxiliar WHERE idAsignacionAuxiliar = ?\n        ";
+            var query = "\n  delete from AsignacionEstudiante where idAsignacionEstudiante = " + id;
+            console.log(query)
+            mysql_1.default.sendQuery(query, function(err, data) {
+                if (err) {
+                    res.status(400).json({
+                        ok: false,
+                        status: 400,
+                        error: err
+                    });
+                } else {
+                    res.json({
+                        ok: true,
+                        status: 200,
+                    });
+                }
+            });
+        };
+        this.deleteSolicitud = function(req, res) {
+            var id = req.params.id;
+            var query = "\n            DELETE FROM SolicitudDesasignacion WHERE idAsignacionEstudiante = " + id;
             mysql_1.default.sendQuery(query, id, function(err, data) {
                 if (err) {
                     res.status(400).json({

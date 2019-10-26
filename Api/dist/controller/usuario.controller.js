@@ -47,6 +47,19 @@ var UsuarioController = /** @class */ (function() {
                 }
             });
         };
+        this.getAllAuxiliares = function(req, res) {
+            var id = req.params.id;
+            var query = " select distinct Usuario.nombre, Usuario.apellido, Usuario.idUsuario FROM AsignacionAuxiliar \n inner join usuario on AsignacionAuxiliar.idUsuario = Usuario.idUsuario  \n Inner Join AsignacionEstudiante on AsignacionEstudiante.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar \n where AsignacionEstudiante.idUsuario = " + id;
+            mysql_1.default.getQuery(query, function(err, data) {
+                if (err) {
+                    res.json([]);
+                } else {
+                    res.json(data);
+                }
+            });
+        };
+
+
         this.getSingle = function(req, res) {
             var query = "\n            CALL SP_GetUsuario(?);\n        ";
             var body = {

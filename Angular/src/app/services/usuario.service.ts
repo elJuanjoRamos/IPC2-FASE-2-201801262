@@ -32,6 +32,12 @@ export class UsuarioService {
                 return user;
             }));
     }
+    getMisAux(id: any) {
+        console.log(id)
+        return this.http.get<any[]>(`${this.URI}/misauxiliares/${id}`).pipe(map(user => {
+                return user;
+            }));
+    }
 
     delete(id:any) {
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});

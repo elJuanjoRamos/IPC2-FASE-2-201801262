@@ -4,47 +4,41 @@ import { map } from 'rxjs/operators';
 
 
 @Injectable(/*{ providedIn: 'root' }*/)
-export class AsignacionEstudianteService {
+export class TicketService {
     URI = 'http://localhost:3000/api';
     headers = new HttpHeaders({'Content-Type': 'application/json','Authorization': localStorage.getItem('id')});
 
     constructor(private http: HttpClient) { }
 
-    get() {
-        return this.http.get<any[]>(`${this.URI}/asignacion-estudiante`).pipe(map(data => {
+    getAll() {
+        return this.http.get<any[]>(`${this.URI}/ticket`).pipe(map(data => {
                 return data;
             }));
     }
-
-    getSolicitudes() {
-        return this.http.get<any[]>(`${this.URI}/solicitud-estudiante`).pipe(map(data => {
+    getMisTickets(id:any) {
+        return this.http.get<any[]>(`${this.URI}/ticket/${id}`).pipe(map(data => {
                 return data;
             }));
     }
     
     delete(id:any) {
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
-        return this.http.delete(`${this.URI}/asignacion-estudiante/${id}`, { headers }).pipe(map(data => {
+        return this.http.delete(`${this.URI}/ticket/${id}`, { headers }).pipe(map(data => {
+            console.log(data);
             return data;
         }));
     }
-    deleteSolicitud(id:any) {
+    post(ticket:any) {
+        let data = JSON.stringify(ticket);
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
-        return this.http.delete(`${this.URI}/solicitud-estudiante/${id}`, { headers }).pipe(map(data => {
+        return this.http.post(`${this.URI}/ticket/`, data, { headers }).pipe(map(data => {
             return data;
         }));
     }
-    post(dt:any) {
-        let data = JSON.stringify(dt);
+    put(ticket:any, id:any) {
+        let data = JSON.stringify(ticket);
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
-        return this.http.post(`${this.URI}/asignacion-estudiante/`, data, { headers }).pipe(map(data => {
-            return data;
-        }));
-    }
-    put(dt:any, id:any) {
-        let data = JSON.stringify(dt);
-        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
-        return this.http.put(`${this.URI}/asignacion-estudiante/${id}`, data, { headers }).pipe(map(data => {
+        return this.http.put(`${this.URI}/ticket/${id}`, data, { headers }).pipe(map(data => {
             return data;
         }));
     }

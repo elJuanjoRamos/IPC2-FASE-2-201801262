@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AsignacionEstudianteService } from '../../../../services/asignacionEstudiante.service';
-import mensaje from '../../../../../../../Api/src/router/mensaje.router';
 
 @Component({
   selector: 'app-asignacionest',

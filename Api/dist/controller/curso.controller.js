@@ -66,23 +66,32 @@ var CursoController = /** @class */ (function() {
             });
         };
         this.createDes = function(req, res) {
-            var query = "\n   SP_SolicitudDesasig(?, ?)\n        ";
             var body = {
                 idUsuario: req.body.idUsuario,
                 idAsignacionAuxiliar: req.body.idAsignacionAuxiliar
             };
-            mysql_1.default.sendQuery(query, [body.idUsuario, body.idAsignacionAuxiliar], function(err, data) {
+            var query = "\n  call SP_SolicitudDesasig(" + body.idUsuario + ", " + body.idAsignacionAuxiliar + ")\n        ";
+            mysql_1.default.sendQuery(query, function(err, data) {
                 if (err) {
-                    res.status(400).json({
+                    res.json({
                         ok: false,
                         status: 400,
                         error: err
                     });
                 } else {
-                    res.json({
-                        ok: true,
-                        status: 200
-                    });
+                    if (JSON.parse(JSON.stringify(data[0]))[0]._existe == 0) {
+                        res.json({
+                            ok: true,
+                            status: 200,
+                            error: 'Solicitud enviada con exito'
+                        });
+                    } else {
+                        res.json({
+                            ok: false,
+                            error: 'Ya se ha enviado una solicitud'
+                        });
+                    }
+
                 }
             });
         };

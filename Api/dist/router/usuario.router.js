@@ -11,7 +11,7 @@ usuario.get('/usuario', usuario_controller_1.default.getInstance().getAll);
 usuario.get('/usuario/admin', usuario_controller_1.default.getInstance().getAllAdmin);
 usuario.get('/auxiliar', usuario_controller_1.default.getInstance().getAllAuxiliar);
 //usuario.get('/usuario/estudiante/:id', usuario_controller_1.default.getInstance().getAllEstudiante);
-usuario.get('/misauxiliares/:id', usuario_controller_1.default.getInstance().getAllEstudiante);
+usuario.get('/misauxiliares/:id', usuario_controller_1.default.getInstance().getAllAuxiliares);
 usuario.get('/misestudiantes/:id', usuario_controller_1.default.getInstance().getAllEstudiante);
 usuario.get('/usuario/:id', usuario_controller_1.default.getInstance().getSingle);
 usuario.post('/usuario', usuario_controller_1.default.getInstance().create);

@@ -277,8 +277,35 @@ CREATE TABLE EvaluacionAlumno(
 );
 
 
-	
+-- CREATE TABLE MESSAGES
+DROP TABLE IF EXISTS SolicitudDesasignacion;
+CREATE TABLE SolicitudDesasignacion(
+    idSolicitudDesasignacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idUsuario INT NOT NULL,
+    idAsignacionAuxiliar INT NOT NULL,
+    idAsignacionEstudiante INT NOT NULL,
+    FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    FOREIGN KEY (idAsignacionAuxiliar) REFERENCES AsignacionAuxiliar(idAsignacionAuxiliar)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
 
+DROP TABLE IF EXISTS Ticket;
+CREATE TABLE Ticket(
+    idTicket INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idUsuario INT NOT NULL,
+    asunto VARCHAR(250) NOT NULL,
+    cuerpo VARCHAR(250) NOT NULL,
+    enviado INT NOT NULL,
+    recibido INT NOT NULL,
+    enproceso INT NOT NULL,
+    terminado INT NOT NULL,
+    FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
 
 -- SP  CREAR Asignacion de estudiante
 DELIMITER $$
@@ -760,7 +787,54 @@ END;
 $$
 
 
+DELIMITER $$
+CREATE PROCEDURE SP_SolicitudDesasig
+(IN _idUsuario INT,IN _idAsig INT)
+BEGIN
 
+DECLARE _existe INT;
+	SET _existe = (select COUNT(*) FROM SolicitudDesasignacion WHERE idUsuario = _idUsuario AND idAsignacionAuxiliar = _idAsig);
+	IF(_existe = 0) THEN
+		
+        INSERT INTO SolicitudDesasignacion(idUsuario, idAsignacionAuxiliar, idAsignacionEstudiante) VALUES(_idUsuario, _idAsig, (SELECT idAsignacionEstudiante from AsignacionEstudiante WHERE idUsuario = _idUsuario AND idAsignacionAuxiliar = _idAsig) );
+		SELECT _existe;
+	ELSE
+		SELECT _existe;
+	END IF;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE SP_CrearTicket
+(IN _idUsuario INT,IN _asunto VARCHAR(255), IN _cuerpo VARCHAR(250))
+BEGIN
+	INSERT INTO Ticket(idUsuario, asunto, cuerpo, enviado, recibido, enproceso, terminado) VALUES (_idUsuario, _asunto, _cuerpo, 1,0,0,0);
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE SP_ActualizarTicket
+(IN _idTicket INT, IN _recibido INT, IN _enproceso INT, IN _terminado INT)
+BEGIN
+	UPDATE TICKET SET recibido = _recibido, enproceso = _enproceso, terminado =_terminado WHERE idTicket= _idTicket; 
+END;
+$$
+
+
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_GETSolicitudDesasig()
+BEGIN
+select idAsignacionEstudiante, Usuario.idUsuario, concat(Usuario.nombre, ' ', Usuario.apellido) as estudiante, Usuario.carnet, AsignacionAuxiliar.idAsignacionAuxiliar,
+ Curso.nombre as curso, Curso.codigo From SolicitudDesasignacion
+ Inner JOIN Usuario ON SolicitudDesasignacion.idUsuario = Usuario.idUsuario
+ INNER JOIN AsignacionAuxiliar ON SolicitudDesasignacion.idAsignacionAuxiliar= AsignacionAuxiliar.idAsignacionAuxiliar
+ INNER JOIN DetalleCurso ON AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso
+ INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso;
+
+END;
+$$
 --HOLA
 END;
 

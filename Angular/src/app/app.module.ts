@@ -55,6 +55,12 @@ import { TipoEvaluacionService } from './services/tipoEvaluacion.service';
 import { AsignacionEstudianteService } from './services/asignacionEstudiante.service';
 import { MensajeEstudianteComponent } from './components/estudiante/dashboard/mensaje/mensajeEst.component';
 import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component';
+import { DesasignacionComponent } from './components/admin/dashboard/desasignacion/desasignacion.component';
+import { MensajeEstudianteFormComponent } from './components/estudiante/dashboard/mensaje/mensajeEstForm.component';
+import { MensajeEstudianteRespComponent } from './components/estudiante/dashboard/mensaje/mensajeEstResp.component';
+import { TicketComponent } from './components/estudiante/dashboard/ticket/ticket.component';
+import { TicketService } from './services/ticket.service';
+import { TicketAdmComponent } from './components/admin/dashboard/ticket/ticketadm.component';
 
 
 
@@ -77,6 +83,8 @@ import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component
     DetalleCursoFormComponent,
     AsignacionAuxiliar,
     AsignacionForm,
+    DesasignacionComponent,
+    TicketAdmComponent,
     //Esto es estudiante
     EstudianteComponent,
     DashEstudianteComponent,
@@ -88,6 +96,10 @@ import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component
     MensajeEstudianteComponent,
     MensajeFormComponent,
     MensajeRespuestaComponent,
+    MensajeEstudianteFormComponent,
+    MensajeEstudianteRespComponent,
+    TicketComponent,
+   
     //Esto es auxiliar
     AuxiliarComponent,
     DashAuxiliarComponent,
@@ -120,7 +132,8 @@ import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component
     ActividadService,
     EvaluacionService,
     TipoEvaluacionService,
-    AsignacionEstudianteService
+    AsignacionEstudianteService,
+    TicketService
   ],
   bootstrap: [AppComponent]
 })

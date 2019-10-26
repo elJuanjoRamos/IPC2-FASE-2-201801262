@@ -1,0 +1,167 @@
+<!-- Header -->
+<!-- Header -->
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Tickets</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Estudiante</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Ticket</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a data-toggle="modal" data-target="#modal-form" class="btn btn-sm btn-neutral">Nuevo Ticket</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row card-wrapper">
+        <div *ngFor="let u of arrayTickets" class="col-lg-4">
+            <!-- Basic with card title -->
+            <div class="card">
+                <!-- Card header -->
+                <div class="card-header">
+                    <!-- Title -->
+                    <h5 class="h3 mb-0">Asunto del Ticket: {{ u.asunto }}</h5>
+                </div>
+                <!-- Card body -->
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <a class="list-group-item list-group-item-action flex-column align-items-start py-4 px-4">
+                            <h4 class="mt-3 mb-1"> Desctipcion</h4>
+                            <p class="text-sm mb-0">{{u.cuerpo}}</p>
+                        </a>
+                    </div>
+                    <br>
+                    <div class="timeline timeline-one-side" data-timeline-content="axis" data-timeline-axis-style="dashed">
+                        <div *ngIf="u.enviado == 1" class="timeline-block">
+                            <span class="timeline-step badge-success">
+                        <i class="ni ni-bell-55"></i>
+                      </span>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between pt-1">
+                                    <div>
+                                        <span class="text-muted text-sm font-weight-bold">Enviado</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i>2 hrs ago</small>
+                                    </div>
+                                </div>
+                                <h6 class="text-sm mt-1 mb-0">El ticket fue enviado a los administradores</h6>
+                            </div>
+                        </div>
+                        <div *ngIf="u.recibido == 1" class="timeline-block">
+                            <span class="timeline-step badge-danger">
+                        <i class="ni ni-html5"></i>
+                      </span>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between pt-1">
+                                    <div>
+                                        <span class="text-muted text-sm font-weight-bold">Recibido</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i>3 hrs ago</small>
+                                    </div>
+                                </div>
+                                <h6 class="text-sm mt-1 mb-0">El ticket fue recibido en administracion.</h6>
+                            </div>
+                        </div>
+                        <div *ngIf="u.enproceso == 1" class="timeline-block">
+                            <span class="timeline-step badge-info">
+                        <i class="ni ni-like-2"></i>
+                      </span>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between pt-1">
+                                    <div>
+                                        <span class="text-muted text-sm font-weight-bold">En proceso</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i>5 hrs ago</small>
+                                    </div>
+                                </div>
+                                <h6 class="text-sm mt-1 mb-0">Los administradores estan trabajando la resolucion del ticket.</h6>
+                            </div>
+                        </div>
+
+
+                        <div *ngIf="u.terminado == 1" class="timeline-block">
+                            <span class="timeline-step badge-warning">
+                            <i class="ni ni-bell-55"></i>
+                          </span>
+                            <div class="timeline-content">
+                                <div class="d-flex justify-content-between pt-1">
+                                    <div>
+                                        <span class="text-muted text-sm font-weight-bold">Finalizado</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <small class="text-muted"><i class="fas fa-clock mr-1"></i>2 hrs ago</small>
+                                    </div>
+                                </div>
+                                <h6 class="text-sm mt-1 mb-0">Los detalles del ticket fueron evaluados y resuetos completamente</h6>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div class="col-md-4">
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div class="card-body px-lg-5 py-lg-5">
+                            <div class="text-center text-muted mb-4">
+                                <small>Ingrese los datos</small>
+                            </div>
+                            <div *ngIf="loginForm">
+                                <form [formGroup]="loginForm" role="form">
+                                    <div class="form-group mb-3">
+                                        <div class="input-group input-group-merge input-group-alternative">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                            </div>
+                                            <input class="form-control" placeholder="Asunto" type="text" formControlName="asunto" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.asunto.errors }">
+                                            <div *ngIf="submitted && f.asunto.errors" class="invalid-feedback">
+                                                <div *ngIf="f.asunto.errors.required">Nombre es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group input-group-merge input-group-alternative">
+                                            <textarea class="form-control" placeholder="Cuerpo del mensaje" formControlName="cuerpo" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cuerpo.errors }" cols="30" rows="10"></textarea>
+                                            <div *ngIf="submitted && f.cuerpo.errors" class="invalid-feedback">
+                                                <div *ngIf="f.cuerpo.errors.required">Cuerpo es requerido</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-primary my-4">Aceptar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,11 +16,14 @@ export class CursoDetalleComponent implements OnInit {
   misActividades: any;
   misEvaluaciones: any;
   uri:any;
+  estado:any;
+  mensaje:any;
+  tipo:any;
   constructor(private service: AsignacionAuxiliarService, private actividadService: ActividadService,
     private evService:EvaluacionService, private cursoService: CursoService,
     private router:Router, private activaderRoutes: ActivatedRoute,) { }
   ngOnInit() {
-    this.inicializar()
+    this.inicializar();
   }
   inicializar(){
     this.activaderRoutes.params.subscribe(data => {
@@ -30,7 +33,6 @@ export class CursoDetalleComponent implements OnInit {
         });
         this.evService.getAllEv(this.uri).subscribe(data => {
             this.misEvaluaciones = data;
-          
         });
         this.actividadService.getMisActividades(this.uri).subscribe(data => {
             this.misActividades = data;
@@ -47,8 +49,25 @@ export class CursoDetalleComponent implements OnInit {
       idUsuario: localStorage.getItem('id'),
       idAsignacionAuxiliar: this.uri
     }
-    this.cursoService.postDesasignar(data).subscribe(d => {
-      this.inicializar();
+    this.cursoService.postDesasignar(data).subscribe(res => {
+      var informacion = JSON.parse(JSON.stringify(res));
+      console.log(informacion)
+      if ( informacion.ok === true ){
+        this.inicializar();
+        this.tipo = 'success';
+        this.estado = false;
+        this.mensaje = informacion.error;
+        setTimeout(() => {
+          this.estado = true;
+      }, 5000);
+    } else {
+        this.estado = informacion.ok;
+        this.mensaje = informacion.error;
+        this.tipo = 'danger';
+        setTimeout(() => {
+          this.estado = true;
+      }, 5000);
+    }
     });
   }
 }
