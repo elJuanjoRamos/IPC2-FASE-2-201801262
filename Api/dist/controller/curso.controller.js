@@ -65,6 +65,27 @@ var CursoController = /** @class */ (function() {
                 }
             });
         };
+        this.createDes = function(req, res) {
+            var query = "\n   SP_SolicitudDesasig(?, ?)\n        ";
+            var body = {
+                idUsuario: req.body.idUsuario,
+                idAsignacionAuxiliar: req.body.idAsignacionAuxiliar
+            };
+            mysql_1.default.sendQuery(query, [body.idUsuario, body.idAsignacionAuxiliar], function(err, data) {
+                if (err) {
+                    res.status(400).json({
+                        ok: false,
+                        status: 400,
+                        error: err
+                    });
+                } else {
+                    res.json({
+                        ok: true,
+                        status: 200
+                    });
+                }
+            });
+        };
         this.update = function(req, res) {
             var body = {
                 nombre: req.body.nombre,
@@ -90,7 +111,7 @@ var CursoController = /** @class */ (function() {
         };
         this.delete = function(req, res) {
             var id = req.params.id;
-            var query = "\n            DELETE FROM Curso WHERE idCurso = ?;\n        ";
+            var query = "\n CALL SP_EliminarCurso(?);\n        ";
             mysql_1.default.sendQuery(query, id, function(err, data) {
                 if (err) {
                     res.status(400).json({
@@ -99,10 +120,17 @@ var CursoController = /** @class */ (function() {
                         error: err
                     });
                 } else {
-                    res.json({
-                        ok: true,
-                        status: 200,
-                    });
+                    if (JSON.parse(JSON.stringify(data[0]))[0]._existe == 0) {
+                        res.json({
+                            ok: true,
+                            status: 200
+                        });
+                    } else {
+                        res.json({
+                            ok: false,
+                            error: "Existen estudiantes asignados a este curso, el curso no puede eliminarse"
+                        });
+                    }
                 }
             });
         };

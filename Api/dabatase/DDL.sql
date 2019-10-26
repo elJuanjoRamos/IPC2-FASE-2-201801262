@@ -61,6 +61,7 @@ CREATE TABLE DetalleCurso(
 	anio VARCHAR(50) NULL,
 	horaInicio VARCHAR(50) NULL,
 	horaFin VARCHAR(50) NULL,
+    fechaFin DATETIME NOT NULL,
     idCurso INT NOT NULL,
     idSeccion INT NOT NULL,
     FOREIGN KEY (idCurso) REFERENCES Curso(idCurso)
@@ -85,17 +86,31 @@ CREATE TABLE AsignacionAuxiliar(
     ON DELETE CASCADE
 );
 
+-- CREATE TABLE ASIGNAMENT AUXILIAR
+DROP TABLE IF EXISTS AsignacionEstudiante;
+CREATE TABLE AsignacionEstudiante(
+    idAsignacionEstudiante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idUsuario INT NOT NULL,
+    idAsignacionAuxiliar INT NOT NULL,
+    FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    FOREIGN KEY (idAsignacionAuxiliar) REFERENCES AsignacionAuxiliar(idAsignacionAuxiliar)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
 -- CREATE TABLE MESSAGES
 DROP TABLE IF EXISTS Mensaje;
 CREATE TABLE Mensaje(
     idMensaje INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idUsuario1 INT NOT NULL,
-    idUsuario2 INT NOT NULL,
+    emisor INT NOT NULL,
+    receptor INT NOT NULL,
     asunto VARCHAR(255) NOT NULL,
-    FOREIGN KEY (idUsuario1) REFERENCES Usuario(idUsuario)
+    FOREIGN KEY (emisor) REFERENCES Usuario(idUsuario)
 	ON UPDATE CASCADE
     ON DELETE CASCADE,
-    FOREIGN KEY (idUsuario2) REFERENCES Usuario(idUsuario)
+    FOREIGN KEY (receptor) REFERENCES Usuario(idUsuario)
 	ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -111,6 +126,23 @@ CREATE TABLE DetalleMensaje(
 	ON UPDATE CASCADE
     ON DELETE CASCADE
 );
+
+-- CREATE TABLE RESPUESTA MENSAJE
+DROP TABLE IF EXISTS RespuestaMensaje;
+CREATE TABLE RespuestaMensaje(
+    idRespuestaMensaje INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idMensaje INT NOT NULL,
+    emisor VARCHAR(255) NOT NULL,
+    receptor VARCHAR(255) NOT NULL,
+    cuerpo VARCHAR(255) NOT NULL,
+    fecha DATETIME NOT NULL,
+    archivo BLOB NULL,
+    FOREIGN KEY (idMensaje) REFERENCES Mensaje(idMensaje)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE
+);
+
+
 
 -- CREATE TABLE FORO
 DROP TABLE IF EXISTS Foro;
@@ -144,20 +176,6 @@ CREATE TABLE DetalleForo(
 
 
 
--- CREATE TABLE DETAIL ASIGNACIONESTUDIANTE
-DROP TABLE IF EXISTS AsignacionEstudiante;
-CREATE TABLE AsignacionEstudiante(
-    idAsignacionEstudiante INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idAsignacionAuxiliar INT NOT NULL, -- Llama a la tabla asignacion auxiliar donde esta el auxiliar y el detalle del curso
-	idUsuario INT NOT NULL, -- Llama al estudiante
-	FOREIGN KEY (idAsignacionAuxiliar) REFERENCES AsignacionAuxiliar(idAsignacionAuxiliar)
-	ON UPDATE CASCADE
-    ON DELETE CASCADE,
-    FOREIGN KEY (idUsuario) REFERENCES Usuario(idUsuario)
-	ON UPDATE CASCADE
-    ON DELETE CASCADE
-);
-
 -- CREATE TABLE DETAIL ACTIVIDAD
 DROP TABLE IF EXISTS Actividad;
 CREATE TABLE Actividad(
@@ -178,10 +196,14 @@ CREATE TABLE Actividad(
 DROP TABLE IF EXISTS ActividadAlumno;
 CREATE TABLE ActividadAlumno(
     idActividadAlumno INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    idAlumno INT NOT NULL,
     idActividad INT NOT NULL,
     entregada INT NOT NULL,
     archivo BLOB NULL,
 	FOREIGN KEY (idActividad) REFERENCES Actividad(idActividad)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE,
+    FOREIGN KEY (idAlumno) REFERENCES Usuario(idUsuario)
 	ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -192,21 +214,21 @@ CREATE TABLE ActividadAlumno(
 DROP TABLE IF EXISTS Evaluacion;
 CREATE TABLE Evaluacion(
     idEvaluacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100) NOT NULL,
+    idAsignacionAuxiliar INT NOT NULL,
+    FOREIGN KEY (idAsignacionAuxiliar) REFERENCES AsignacionAuxiliar(idAsignacionAuxiliar)
+	ON UPDATE CASCADE
+    ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS DetalleEvaluacion;
 CREATE TABLE DetalleEvaluacion(
     idDetalleEvaluacion INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    idAsignacionAuxiliar INT NOT NULL,
     idEvaluacion INT NOT NULL,
     activado INT NOT NULL,
     aleatorio INT NOT NULL,
     ponderacion INT NOT NULL,
     FOREIGN KEY (idEvaluacion) REFERENCES Evaluacion(idEvaluacion)
-	ON UPDATE CASCADE
-    ON DELETE CASCADE,
-    FOREIGN KEY (idAsignacionAuxiliar) REFERENCES AsignacionAuxiliar(idAsignacionAuxiliar)
 	ON UPDATE CASCADE
     ON DELETE CASCADE
 );
@@ -217,6 +239,7 @@ CREATE TABLE EvaluacionVF(
     idDetalleEvaluacion INT NOT NULL,
     pregunta VARCHAR(250) NOT NULL,
     respuesta INT NOT NULL,
+    tipo  VARCHAR(250) NOT NULL,
     FOREIGN KEY (idDetalleEvaluacion) REFERENCES DetalleEvaluacion(idDetalleEvaluacion)
 	ON UPDATE CASCADE
     ON DELETE CASCADE
@@ -231,6 +254,7 @@ CREATE TABLE EvaluacionSM(
     respuesta1 VARCHAR(250) NOT NULL,
     respuesta2  VARCHAR(250) NOT NULL,
     respuesta3  VARCHAR(250) NOT NULL,
+    tipo  VARCHAR(250) NOT NULL,
     correcta VARCHAR(250) NOT NULL, -- Va a recibir la misma respuesta que se seleccione como correcta
     FOREIGN KEY (idDetalleEvaluacion) REFERENCES DetalleEvaluacion(idDetalleEvaluacion)
 	ON UPDATE CASCADE
@@ -253,8 +277,7 @@ CREATE TABLE EvaluacionAlumno(
 );
 
 
-
-
+	
 
 
 -- SP  CREAR Asignacion de estudiante
@@ -263,11 +286,20 @@ CREATE PROCEDURE SP_CreateAsignacionEstudiante
 (IN _idAsignacionAuxiliar INT, IN _idUsuario INT)
 BEGIN
 	DECLARE _existe INT;
+    DECLARE _fechaFin DATETIME;
+    DECLARE _tiempo INT;
+	 SET _fechaFin = (SELECT fechaFin FROM DetalleCurso JOIN AsignacionAuxiliar ON AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso WHERE idAsignacionAuxiliar = _idAsignacionAuxiliar);
     SET _existe = (SELECT COUNT(*) FROM AsignacionEstudiante WHERE idAsignacionAuxiliar = _idAsignacionAuxiliar AND idUsuario = _idUsuario);
 	IF(_existe = 0) THEN
-	INSERT INTO AsignacionEstudiante(idAsignacionAuxiliar, idUsuario) VALUES (_idAsignacionAuxiliar, _idUsuario);
-		SELECT _existe;
-	ELSE
+        IF(_fechaFin > NOW()) THEN
+			INSERT INTO AsignacionEstudiante(idAsignacionAuxiliar, idUsuario) VALUES (_idAsignacionAuxiliar, _idUsuario);
+			SET _tiempo = 0;
+			SELECT _tiempo;
+		ELSE
+			SET _tiempo = 1;
+			SELECT _tiempo;
+		END IF;
+    ELSE
 		SELECT _existe;
 	END IF;
 END;
@@ -366,34 +398,33 @@ $$
 -- Crear Evaluacion
 DELIMITER $$
 CREATE PROCEDURE SP_CrearEvaluacion
-(IN _nombre VARCHAR(100))
+(IN _nombre VARCHAR(100), IN _id INT)
 BEGIN
 	DECLARE _existe INT;
-    SET _existe = (SELECT COUNT(*) FROM Evaluacion WHERE nombre = _nombre);
+    SET _existe = (SELECT COUNT(*) FROM Evaluacion WHERE nombre = _nombre AND idAsignacionAuxiliar = _id);
 	IF(_existe = 0) THEN
-		INSERT INTO Evaluacion(nombre) VALUES (_nombre);
+		INSERT INTO Evaluacion(nombre, idAsignacionAuxiliar) VALUES (_nombre, _id);
         SELECT _existe;
 	ELSE
 		SELECT _existe;
 	END IF;
 END;
 $$
-
 -- Eliminar EVALUACION
 DELIMITER $$
 CREATE PROCEDURE SP_EliminarEvaluacion
 (IN _id INT)
 BEGIN
-	DELETE FROM Evaluacion WHERE idEvaluacion = _idEvaluacion;
+	DELETE FROM Evaluacion WHERE idEvaluacion = _id;
 END;
 $$
 -- ACTUALIZAR EVALUACION
 DELIMITER $$
 CREATE PROCEDURE SP_ActualizarEvaluacion
-(IN _nombre VARCHAR(100), IN _id INT)
+(IN _nombre VARCHAR(100), IN _id INT, IN _idAsig INT)
 BEGIN
 	DECLARE _existe INT;
-    SET _existe = (SELECT COUNT(*) FROM Evaluacion WHERE nombre = _nombre);
+    SET _existe = (SELECT COUNT(*) FROM Evaluacion WHERE nombre = _nombre AND idAsignacionAuxiliar = _idAsig);
 	IF(_existe = 0) THEN
 		UPDATE Evaluacion SET nombre = _nombre WHERE idEvaluacion = _id;
         SELECT _existe;
@@ -403,16 +434,29 @@ BEGIN
 END;
 $$
 
+-- SP OBTENER EVALUACIONES
+DELIMITER $$
+CREATE PROCEDURE SP_get_Evaluaciones
+(IN _id INT)
+BEGIN
+	select idEvaluacion, evaluacion.idAsignacionAuxiliar, evaluacion.nombre as ev, Curso.nombre as cur from evaluacion 
+INNER JOIN AsignacionAuxiliar on evaluacion.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar
+INNER JOIN Usuario ON AsignacionAuxiliar.idUsuario = Usuario.idUsuario
+INNER JOIN DetalleCurso ON  AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso
+INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso
+WHERE AsignacionAuxiliar.idUsuario = _id;
+END;
+$$
 
 -- SP CREAR DETALLE EVALUACION 
 DELIMITER $$
 CREATE PROCEDURE SP_CreateDetalleEvaluacion
-(IN _idEvaluacion INT, IN _activado INT, IN _aleatorio INT, IN _ponderacion INT, IN _idAsignacionAuxiliar INT)
+(IN _idEvaluacion INT, IN _activado INT, IN _aleatorio INT, IN _ponderacion INT)
 BEGIN
 	DECLARE _existe INT;
-    SET _existe = (SELECT COUNT(*) FROM DetalleEvaluacion WHERE idAsignacionAuxiliar = _idAsignacionAuxiliar AND idEvaluacion = _idEvaluacion AND activado = _activado AND aleatorio = _aleatorio AND ponderacion = _ponderacion);
+    SET _existe = (SELECT COUNT(*) FROM DetalleEvaluacion WHERE idEvaluacion = _idEvaluacion AND activado = _activado AND aleatorio = _aleatorio AND ponderacion = _ponderacion);
 	IF(_existe = 0) THEN
-		INSERT INTO DetalleEvaluacion(idAsignacionAuxiliar, idEvaluacion, activado, aleatorio, ponderacion) VALUES (_idAsignacionAuxiliar, _idEvaluacion, _activado, _aleatorio, _ponderacion);
+		INSERT INTO DetalleEvaluacion(idEvaluacion, activado, aleatorio, ponderacion) VALUES (_idEvaluacion, _activado, _aleatorio, _ponderacion);
         SELECT _existe;
 	ELSE
 		SELECT _existe;
@@ -429,21 +473,25 @@ BEGIN
 END;
 $$
 
+
+
 -- ACTUALIZAR DETALLE EVALUACION
 DELIMITER $$
 CREATE PROCEDURE SP_ActualizarDetalleEvaluacion
-(IN _id INT, IN _idEvaluacion INT, IN _activado INT, IN _aleatorio INT, IN _ponderacion INT, IN _idAsignacionAuxiliar INT)
+(IN _id INT, IN _activado INT, IN _aleatorio INT, IN _ponderacion INT)
 BEGIN
 	DECLARE _existe INT;
-    SET _existe = (SELECT COUNT(*) FROM DetalleEvaluacion WHERE idAsignacionAuxiliar = _idAsignacionAuxiliar AND idEvaluacion = _idEvaluacion AND activado = _activado AND aleatorio = _aleatorio AND ponderacion = _ponderacion);
+    SET _existe = (SELECT COUNT(*) FROM DetalleEvaluacion WHERE activado = _activado AND aleatorio = _aleatorio AND ponderacion = _ponderacion);
 	IF(_existe = 0) THEN
-		UPDATE DetalleEvaluacion SET idAsignacionAuxiliar= _idAsignacionAuxiliar,  idEvaluacion = _idEvaluacion, activado = _activado, aleatorio = _aleatorio, ponderacion =_ponderacion WHERE idDetalleEvaluacion = _id;
+		UPDATE DetalleEvaluacion SET activado = _activado, aleatorio = _aleatorio, ponderacion =_ponderacion WHERE idDetalleEvaluacion = _id;
         SELECT _existe;
 	ELSE
 		SELECT _existe;
 	END IF;
 END;
 $$
+
+select * from detalleEvaluacion
 
 
 -- PROCEDMIENTOS ALMACENADOS PARA EVALUACION SELECCION MULTIPLE
@@ -458,7 +506,7 @@ BEGIN
     SET _existe = (SELECT COUNT(*) FROM EvaluacionSM WHERE idDetalleEvaluacion = _idDetalleEvaluacion AND pregunta = _pregunta
     AND respuesta1 = _respuesta1 AND respuesta2 = _respuesta2 AND respuesta3 = _respuesta3 AND correcta = _correcta);
 	IF(_existe = 0) THEN
-		INSERT INTO EvaluacionSM(idDetalleEvaluacion, pregunta, respuesta1,respuesta2,respuesta3, correcta) VALUES (_idDetalleEvaluacion, _pregunga, _respuesta1, _respuesta2, _respuesta3, _correcta);
+		INSERT INTO EvaluacionSM(idDetalleEvaluacion, pregunta, respuesta1,respuesta2,respuesta3, tipo, correcta) VALUES (_idDetalleEvaluacion, _pregunta, _respuesta1, _respuesta2, _respuesta3, 'SM' ,_correcta);
         SELECT _existe;
 	ELSE
 		SELECT _existe;
@@ -487,13 +535,14 @@ BEGIN
 	DECLARE _existe INT;
     SET _existe = (SELECT COUNT(*) FROM EvaluacionVF WHERE idDetalleEvaluacion = _idDetalleEvaluacion AND pregunta = _pregunta AND respuesta = _respuesta);
 	IF(_existe = 0) THEN
-		INSERT INTO EvaluacionVF(idDetalleEvaluacion, pregunta, respuesta) VALUES (_idDetalleEvaluacion, _pregunga, _respuesta);
+		INSERT INTO EvaluacionVF(idDetalleEvaluacion, pregunta, respuesta, tipo) VALUES (_idDetalleEvaluacion, _pregunta, _respuesta, 'VF');
         SELECT _existe;
 	ELSE
 		SELECT _existe;
 	END IF;
 END;
 $$
+
 
 -- ELIMINAR EVALUACION VF
 DELIMITER $$
@@ -504,6 +553,20 @@ BEGIN
 END;
 $$
 
+-- OBTENER PREGUNTAS EVALUACION
+DELIMITER $$
+CREATE PROCEDURE SP_GETPreguntas
+(IN _idDetalleEvaluacion INT)
+BEGIN
+	DECLARE _existe INT;
+    SET _existe = (SELECT COUNT(*) FROM EvaluacionVF WHERE idDetalleEvaluacion = _idDetalleEvaluacion);
+	IF(_existe >= 1) THEN
+		SELECT * FROM EvaluacionVF WHERE  idDetalleEvaluacion = _idDetalleEvaluacion;
+    ELSE
+		SELECT * FROM EvaluacionSM WHERE  idDetalleEvaluacion = _idDetalleEvaluacion;
+	END IF;
+END;
+$$
 
 BEGIN  -- PROCEDIMIENTOS ALMACENADOS QUE YA ESTABAN CREADO
 
@@ -579,12 +642,12 @@ $$
 -- SP VER CREAR USUARIO
 DELIMITER $$
 CREATE PROCEDURE SP_CreateDetalleCurso
-(IN _semestre VARCHAR(50), _anio VARCHAR(50), _horaInicio VARCHAR(50), _horaFin VARCHAR(50), _idCurso INT, _idSeccion INT)
+(IN _semestre VARCHAR(50), _anio VARCHAR(50), _horaInicio VARCHAR(50), _horaFin VARCHAR(50), _fechaFin DATETIME, _idCurso INT, _idSeccion INT)
 BEGIN
 	DECLARE _existe INT;
 	SET _existe = (SELECT COUNT(*) FROM DetalleCurso WHERE idCurso = _idCurso AND idSeccion = _idSeccion AND horaInicio = _horaInicio AND horaFin = _horaFin AND semestre = _semestre);
 	IF(_existe = 0) THEN
-	INSERT INTO DetalleCurso(semestre, anio, horaInicio, horaFin, idCurso, idSeccion) VALUES (_semestre, _anio, _horaInicio, _horaFin, _idCurso, _idSeccion);
+	INSERT INTO DetalleCurso(semestre, anio, horaInicio, horaFin, fechaFin, idCurso, idSeccion) VALUES (_semestre, _anio, _horaInicio, _horaFin, _fechaFin, _idCurso, _idSeccion);
 		SELECT _existe;
 	ELSE
 		SELECT _existe;
@@ -595,12 +658,12 @@ $$
 -- SP VER CREAR USUARIO
 DELIMITER $$
 CREATE PROCEDURE SP_UpdateDetalleCurso
-(IN _semestre VARCHAR(50), _anio VARCHAR(50), _horaInicio VARCHAR(50), _horaFin VARCHAR(50), _idCurso INT, _idSeccion INT, _idDetalleCurso INT)
+(IN _semestre VARCHAR(50), _anio VARCHAR(50), _horaInicio VARCHAR(50), _horaFin VARCHAR(50), _fechaFin DATETIME,  _idCurso INT, _idSeccion INT, _idDetalleCurso INT)
 BEGIN
 	DECLARE _existe INT;
 	SET _existe = (SELECT COUNT(*) FROM DetalleCurso WHERE idCurso = _idCurso AND idSeccion = _idSeccion AND horaInicio = _horaInicio AND horaFin = _horaFin AND semestre = _semestre);
 	IF(_existe = 0) THEN
-		UPDATE DetalleCurso SET semestre = _semestre, anio = _anio, horaInicio = _horaInicio, horaFin = _horaFin,
+		UPDATE DetalleCurso SET semestre = _semestre, anio = _anio, fechaFin = _fechaFin,  horaInicio = _horaInicio, horaFin = _horaFin,
         idCurso = _idCurso, idSeccion = _idSeccion WHERE idDetalleCurso = _idDetalleCurso;
 		SELECT _existe;
 	ELSE
@@ -649,14 +712,56 @@ DELIMITER $$
 CREATE PROCEDURE SP_CreateMensaje
 (IN _idUsuario1 INT, _idUsuario2 INT, _asunto VARCHAR(255), _cuerpo VARCHAR(255), _archivo BLOB)
 BEGIN
-	INSERT INTO Mensaje(idUsuario1, idUsuario2, asunto) VALUES(_idUsuario1, _idUsuario2, _asunto);
+	INSERT INTO Mensaje(emisor, receptor, asunto) VALUES(_idUsuario1, _idUsuario2, _asunto);
     INSERT INTO DetalleMensaje(idMensaje, cuerpo, archivo) VALUES((SELECT max(idMensaje) FROM Mensaje), _cuerpo, _archivo);
+    INSERT INTO RespuestaMensaje(idMensaje, cuerpo, fecha, archivo, emisor, receptor) VALUES((SELECT max(idMensaje) FROM Mensaje),_cuerpo, NOW(), _archivo, (SELECT concat(nombre, ' ', apellido) from Usuario WHERE idUsuario = _idUsuario1),(SELECT concat(nombre, ' ', apellido) from Usuario WHERE idUsuario = _idUsuario2) );
+    
 END;
 $$
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_CreateRespuesta
+(IN _idUsuario1 VARCHAR(255), _idUsuario2 VARCHAR(255), _asunto VARCHAR(255), _cuerpo VARCHAR(255), _archivo BLOB, _idMensaje INT)
+BEGIN
+    INSERT INTO RespuestaMensaje(idMensaje, cuerpo, fecha, archivo, emisor, receptor) VALUES((SELECT max(idMensaje) FROM Mensaje),_cuerpo, NOW(), _archivo, _idUsuario1 ,_idUsuario2 );
+END;
+$$
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_EliminarCurso
+(IN _id INT)
+BEGIN
+
+DECLARE _existe INT;
+	SET _existe = (select COUNT(*) FROM AsignacionEstudiante  Inner join AsignacionAuxiliar ON AsignacionEstudiante.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar INNER JOIN DetalleCurso ON AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso  INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso WHERE DetalleCurso.idCurso = _id);
+	IF(_existe = 0) THEN
+		DELETE FROM Curso WHERE idCurso = _id;
+		SELECT _existe;
+	ELSE
+		SELECT _existe;
+	END IF;
+
+END;
+$$
+
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_GetDetalleCurso
+(IN _id INT)
+BEGIN
+	SELECT idDetalleCurso, semestre, anio, horaInicio, horaFin, Curso.nombre, Curso.codigo, seccion.nombre AS 'seccion' From DetalleCurso
+	INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso 
+	INNER JOIN Seccion on DetalleCurso.idSeccion = Seccion.idSeccion
+    WHERE idDetalleCurso NOT IN (SELECT idDetalleCurso FROM AsignacionAuxiliar);
+END;
+$$
+
+
+
 --HOLA
 END;
-
-
-
 
 

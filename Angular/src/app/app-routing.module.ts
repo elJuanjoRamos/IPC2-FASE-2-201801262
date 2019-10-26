@@ -4,11 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { HomeComponent } from './components/home.component';
 import { home_routes } from './components/home.routes';
+import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component';
 
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
+  { path: 'registro/aux', component: RegistroAuxiliarComponent },
   { path: 'home', component: HomeComponent, children: home_routes/*, canActivate: [ AuthGuardService ]*/ },
   {path: '**', pathMatch: 'full', redirectTo: 'login'}
 

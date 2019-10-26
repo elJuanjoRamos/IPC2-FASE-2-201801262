@@ -21,72 +21,243 @@
             </div>
         </div>
     </div>
-    <!-- Page content -->
+
+
     <div class="container-fluid mt--6">
+
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-5">
                 <div class="card-wrapper">
                     <!-- Form controls -->
                     <div class="card">
                         <!-- Card header -->
                         <div class="card-header">
-                            <h3 class="mb-0">Formulario</h3>
+                            <h3 class="mb-0">Auxiliares Registrados</h3>
                         </div>
                         <!-- Card body -->
-                        <div *ngIf="loginForm" class="card-body">
-                            <form [formGroup]="loginForm" role="form" data-parsley-validate="" novalidate="" class="form-horizontal">
-                                <div class="form-group">
-                                    <label class="form-control-label" for="idUsuario">Auxiliar</label>
-                                    <select formControlName="idUsuario" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idUsuario.errors }">
-                                        <option *ngFor="let u of arrayUsuarios"  value="{{u.idUsuario}}">{{u.nombre}}</option>
-                                     </select>
-                                    <div *ngIf="submitted && f.idUsuario.errors" class="invalid-feedback">
-                                        <div *ngIf="f.idUsuario.errors.required">El auxiliar es requerido</div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-control-label" for="idDetalleCurso">Curso</label>
-                                    <select formControlName="idDetalleCurso" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idDetalleCurso.errors }">
-                                        <option *ngFor="let u of arrayDetalles"  value="{{u.idDetalleCurso}}">Curso: {{u.nombre}}/ Seccion: {{u.seccion}} / Horario: {{u.horaInicio}} to {{u.horaFin}} / Semestre: {{u.semestre}}</option>
-                                     </select>
-                                    <div *ngIf="submitted && f.idDetalleCurso.errors" class="invalid-feedback">
-                                        <div *ngIf="f.idDetalleCurso.errors.required">El curso es requerido</div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div *ngIf="validar == false">
-                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                            <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                                            <span class="alert-text"><strong>Atencion!</strong> {{mensaje}}</span>
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                      <span aria-hidden="true">×</span>
-                                                    </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="button" (click)="validarAsig()" [disabled]="loading" class="btn btn-info">
-                                                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                                Validar
-                                        </button>
-                                        <button *ngIf="true" type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
-                                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-                                            Aceptar
-                                    </button>
-
-                                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
-                                    </div>
-                                </div>
-                            </form>
-
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-control-label">Buscar Auxiliar</label>
+                                <input placeholder="Buscar" class="form-control form-control-sm" [(ngModel)]="term" type="text">
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-flush" id="datatable-basic">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">ID#</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="arrayUsuarios.lengt !=0">
+                                        <tr *ngFor="let u of arrayUsuarios |filter:term">
+                                            <th scope="row">
+                                                {{u.idUsuario}}
+                                            </th>
+                                            <td>
+                                                {{u.nombre}} {{u.apellido}}
+                                            </td>
+                                            <td>
+                                                <button (click)="cargar(u)" class="btn btn-sm btn-danger" type="button"><em class="fa fa-user"></em></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tfoot>
+                                            <div>
+                                            </div>
+                                        </tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
+                    <div *ngIf="ver && ver2" class="card">
+                        <!-- Card header -->
+                        <div class="card-header">
+                            <!-- Title -->
+                            <h5 class="h3 mb-0">Detalle de Asignacion</h5>
+                        </div>
+                        <!-- Card body -->
+                        <div class="card-body p-0">
+                            <a class="list-group-item list-group-item-action flex-column align-items-start py-4 px-4">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <div>
+                                        <div class="d-flex w-100 align-items-center">
+                                            <img src="https://library.kissclipart.com/20180918/wfq/kissclipart-avatar-windows-clipart-social-media-user-profile-c-8dbd576b78fa0d91.jpg" alt="Image placeholder" class="avatar avatar-xs mr-2">
+                                            <h4 class="mb-1">Nombre: {{auxiliar.nombre}} {{auxiliar.apellido}}</h4>
+                                        </div>
+                                        <br>
+                                        <div class="d-flex w-100 align-items-center">
+                                            <img src="https://cdn.iconscout.com/icon/free/png-512/id-card-401-1114832.png" alt="Image placeholder" class="avatar avatar-xs mr-2">
+                                            <h4 class="mb-1">ID: {{auxiliar.idUsuario}} </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <ul class="list-group list-group-flush" data-toggle="checklist">
+                                <li class="checklist-entry list-group-item flex-column align-items-start py-4 px-4">
+                                    <div class="checklist-item checklist-item-success">
+                                        <div class="checklist-info">
+                                            <h5 class="checklist-title mb-0">Curso</h5>
+                                            <small>Nombre: {{ detalle.nombre }} </small> <br>
+                                            <small>Codigo {{ detalle.codigo }}</small>
+                                        </div>
+                                        <div>
+                                            <div class="custom-control custom-checkbox custom-checkbox-success">
+                                                <input class="custom-control-input" id="chk-todo-task-1" type="checkbox" checked="">
+                                                <label class="custom-control-label" for="chk-todo-task-1"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="checklist-entry list-group-item flex-column align-items-start py-4 px-4">
+                                    <div class="checklist-item checklist-item-warning">
+                                        <div class="checklist-info">
+                                            <h5 class="checklist-title mb-0">Seccion</h5>
+                                            <small>{{detalle.seccion}}</small>
+                                        </div>
+                                        <div>
+                                            <div class="custom-control custom-checkbox custom-checkbox-warning">
+                                                <input class="custom-control-input" id="chk-todo-task-2" type="checkbox" checked="">
+                                                <label class="custom-control-label" for="chk-todo-task-2"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="checklist-entry list-group-item flex-column align-items-start py-4 px-4">
+                                    <div class="checklist-item checklist-item-info">
+                                        <div class="checklist-info">
+                                            <h5 class="checklist-title mb-0">Horario</h5>
+                                            <small>{{detalle.horaInicio}} to {{detalle.horaFin}}</small>
+                                        </div>
+                                        <div>
+                                            <div class="custom-control custom-checkbox custom-checkbox-info">
+                                                <input class="custom-control-input" id="chk-todo-task-3" type="checkbox" checked="">
+                                                <label class="custom-control-label" for="chk-todo-task-3"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="checklist-entry list-group-item flex-column align-items-start py-4 px-4">
+                                    <div class="checklist-item checklist-item-danger">
+                                        <div class="checklist-info">
+                                            <h5 class="checklist-title mb-0">Semestre</h5>
+                                            <small>{{detalle.semestre}} - {{detalle.anio}}</small>
+                                        </div>
+                                        <div>
+                                            <div class="custom-control custom-checkbox custom-checkbox-danger">
+                                                <input class="custom-control-input" id="chk-todo-task-4" type="checkbox" checked="">
+                                                <label class="custom-control-label" for="chk-todo-task-4"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-md-3">
+
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-default" (click)='validarAsignacion()' data-toggle="notify" data-placement="top" data-align="center" data-type="default" data-icon="ni ni-bell-55">Validar Asignacion</button>
+
+                                </div>
+                                <div class="col-md-3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="estado == false" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
+                    <span class="alert-text"><strong>Atencion!</strong> {{ mensaje }}</span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">×</span>
+                                </button>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="card-wrapper">
+                    <!-- Sizes -->
+                    <div *ngIf="ver" class="card">
+                        <!-- Card header -->
+                        <div class="card-header">
+                            <h3 class="mb-0">Detalle de Asignacion</h3>
+                        </div>
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <a class="list-group-item list-group-item-action flex-column align-items-start py-4 px-4">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div>
+                                            <div class="d-flex w-100 align-items-center">
+                                                <img src="https://library.kissclipart.com/20180918/wfq/kissclipart-avatar-windows-clipart-social-media-user-profile-c-8dbd576b78fa0d91.jpg" alt="Image placeholder" class="avatar avatar-xs mr-2">
+                                                <h3 class="mb-1">Nombre: {{auxiliar.nombre}} {{auxiliar.apellido}}</h3>
+                                            </div>
+                                            <br>
+                                            <div class="d-flex w-100 align-items-center">
+                                                <img src="https://cdn.iconscout.com/icon/free/png-512/id-card-401-1114832.png" alt="Image placeholder" class="avatar avatar-xs mr-2">
+                                                <h3 class="mb-1">ID: {{auxiliar.idUsuario}} </h3>
+                                            </div>
+                                            <br>
+                                            <div class="d-flex w-100 align-items-center">
+                                                <img src="https://cdn.iconscout.com/icon/premium/png-512-thumb/employee-role-1-738849.png" alt="Image placeholder" class="avatar avatar-xs mr-2">
+                                                <h3 class="mb-1">Rol: Auxiliar </h3>
+                                            </div>
+
+                                        </div>
+                                        <small>2 hrs ago</small>
+                                    </div>
+                                    <h4 class="mt-3 mb-1"> Datos </h4>
+                                    <p class="text-sm mb-0">Los datos que se muestran son informacion basica del usuario</p>
+                                </a>
+                            </div>
+                            <br>
+                            <h4 class="mt-3 mb-1"> Cursos para asignar </h4>
+                            <div class="table-responsive">
+                                <table class="table table-flush" id="datatable-basic">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th scope="col">ID#</th>
+                                            <th scope="col">Curso</th>
+                                            <th scope="col">Seccion</th>
+                                            <th scope="col">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of arrayDetalles">
+                                            <th scope="row">
+                                                {{u.idDetalleCurso}}
+                                            </th>
+                                            <td>
+                                                {{u.nombre}}
+                                            </td>
+                                            <td>
+                                                {{u.seccion}}
+                                            </td>
+                                            <td>
+                                                <button (click)="cargar2(u)" class="btn btn-sm btn-danger" type="button"><em class="fa fa-user"></em></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tfoot>
+                                            <div>
+                                            </div>
+                                        </tfoot>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <!-- Footer -->
         <app-footer></app-footer>
     </div>
+
 </div>

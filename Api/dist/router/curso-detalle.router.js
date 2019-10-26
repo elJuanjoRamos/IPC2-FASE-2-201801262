@@ -7,6 +7,7 @@ var express_1 = require("express");
 var curso_detalle_controller_1 = __importDefault(require("./../controller/curso-detalle.controller"));
 var cursoDetalle = express_1.Router();
 cursoDetalle.get('/curso-detalle', curso_detalle_controller_1.default.getInstance().getAll);
+cursoDetalle.get('/curso-det/:id', curso_detalle_controller_1.default.getInstance().getDet);
 cursoDetalle.get('/curso-detalle/:id', curso_detalle_controller_1.default.getInstance().getSingle);
 cursoDetalle.post('/curso-detalle', curso_detalle_controller_1.default.getInstance().create);
 cursoDetalle.put('/curso-detalle/:id', curso_detalle_controller_1.default.getInstance().update);

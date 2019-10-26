@@ -1,0 +1,101 @@
+<!-- Header -->
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Evaluacion</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a href="#"><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#">Auxiliar</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Evaluacioens</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-lg-6 col-5 text-right">
+                    <a class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#modal-form">Nueva evaluacion</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="col-md-4">
+    <div class="modal fade" id="modal-form" tabindex="-1" role="dialog" aria-labelledby="modal-form" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal- modal-dialog-centered modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body p-0">
+                    <div class="card bg-secondary border-0 mb-0">
+                        <div *ngIf="loginForm" class="card-body px-lg-5 py-lg-5">
+                            <div class="text-center text-muted mb-4">
+                                <small>Ingrese el nombre de la evaluacion</small>
+                            </div>
+                            <form [formGroup]="loginForm" role="form">
+                                <div class="form-group mb-3">
+                                    <div class="input-group input-group-merge input-group-alternative">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                        </div>
+                                        <input formControlName="nombre" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.nombre.errors }" placeholder="Nombre" type="text">
+                                        <div *ngIf="submitted && f.nombre.errors" class="invalid-feedback">
+                                            <div *ngIf="f.nombre.errors.required">Nombre es requerido</div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="input-group input-group-merge input-group-alternative">
+                                        <select formControlName="idAsignacionAuxiliar" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idAsignacionAuxiliar.errors }">
+                                            <option value="" disabled selected>Curso de la evaluacion</option>
+                                            <option *ngFor="let u of arrayCursos"  value="{{u.idAsignacionAuxiliar}}"  >{{ u.nombre }}</option>
+                                         </select>
+                                        <div *ngIf="submitted && f.idAsignacionAuxiliar.errors" class="invalid-feedback">
+                                            <div *ngIf="f.idAsignacionAuxiliar.errors.required">El curso es requerido</div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" (click)="onSubmit()" [disabled]="loading" class="btn btn-info">
+                                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                                        Aceptar
+                                </button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Page content -->
+<div class="container-fluid mt--6">
+    <div class="row card-wrapper">
+        <div *ngFor="let u of misEvaluaciones" class="col-lg-4">
+            <!-- Basic with card title -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <!-- Title -->
+                            <h5 class="h3 mb-0">Nombre: {{u.ev}}</h5>
+                        </div>
+                        <div class="col-4 text-right">
+                            <a (click)='eliminar(u.idEvaluacion)' style="color:blue" class="btn btn-sm btn-neutral">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-4">Curso: {{u.cur}}</p>
+                    <a [routerLink]="['/home/dashboard/aux/auxiliar/evaluaciones/', u.idEvaluacion]" class="btn btn-primary">Gestionar a la evaluacion</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,11 +7,37 @@ var mysql_1 = __importDefault(require("./../mysql/mysql"));
 var EvaluacionController = /** @class */ (function() {
     function EvaluacionController() {
         this.getAll = function(req, res) {
-            var query = "\n            SELECT * FROM Evaluacion\n        ";
-            mysql_1.default.getQuery(query, function(err, data) {
+            var body = {
+                idAsignacionAuxiliar: req.params.id
+            };
+            var query = "CALL SP_get_Evaluaciones(?)";
+            mysql_1.default.sendQuery(query, body.idAsignacionAuxiliar, function(err, data) {
                 if (err) {
-                    res.json([]);
+                    res.status(400).json({
+                        ok: false,
+                        status: 400,
+                        error: err
+                    });
                 } else {
+                    console.log(data)
+                    res.json(data[0]);
+                }
+            });
+        };
+        this.getAllEvCourse = function(req, res) {
+            var body = {
+                idAsignacionAuxiliar: req.params.id
+            };
+            var query = "select Evaluacion.idEvaluacion, Evaluacion.nombre, ponderacion FROM DetalleEvaluacion \n INNER JOIN Evaluacion ON DetalleEvaluacion.idEvaluacion = Evaluacion.idEvaluacion WHERE Evaluacion.idAsignacionAuxiliar = ? AND DetalleEvaluacion.activado = 1  ";
+            mysql_1.default.sendQuery(query, body.idAsignacionAuxiliar, function(err, data) {
+                if (err) {
+                    res.status(400).json({
+                        ok: false,
+                        status: 400,
+                        error: err
+                    });
+                } else {
+                    console.log(data)
                     res.json(data);
                 }
             });
@@ -34,11 +60,12 @@ var EvaluacionController = /** @class */ (function() {
             });
         };
         this.create = function(req, res) {
-            var query = "\n  CALL SP_CrearEvaluacion(?)\n        ";
+            var query = "\n  CALL SP_CrearEvaluacion(?,?)\n        ";
             var body = {
-                nombre: req.body.nombre
+                nombre: req.body.nombre,
+                id: req.body.idAsignacionAuxiliar
             };
-            mysql_1.default.sendQuery(query, [body.nombre], function(err, data) {
+            mysql_1.default.sendQuery(query, [body.nombre, body.id], function(err, data) {
                 if (err) {
                     res.status(400).json({
                         ok: false,
@@ -76,7 +103,7 @@ var EvaluacionController = /** @class */ (function() {
         };
         this.delete = function(req, res) {
             var id = req.params.id;
-            var query = "\n  SP_EliminarEvaluacion(?);\n        ";
+            var query = "\n CALL SP_EliminarEvaluacion(?);\n        ";
             mysql_1.default.sendQuery(query, id, function(err, data) {
                 if (err) {
                     res.status(400).json({
@@ -105,7 +132,7 @@ var EvaluacionController = /** @class */ (function() {
             });
         };
         this.getSingleDetail = function(req, res) {
-            var query = "\n            SELECT * FROM DetalleEvaluacion WHERE idDetalleEvaluacion = ?\n        ";
+            var query = "\n            SELECT * FROM DetalleEvaluacion WHERE idEvaluacion = ?\n        ";
             var body = {
                 idEvaluacion: req.params.id
             };
@@ -124,14 +151,13 @@ var EvaluacionController = /** @class */ (function() {
 
         this.createDetail = function(req, res) {
             var body = {
-                activado: req.body.activado,
-                idAsignacionAuxiliar: req.body.idAsignacionAuxiliar,
-                idEvaluacion: req.params.idEvalucion,
-                aleatorio: req.params.aleatorio,
-                ponderacion: req.params.ponderacion
+                activado: req.body.habilitado,
+                idEvaluacion: req.body.idEvaluacion,
+                aleatorio: req.body.aleatorio,
+                ponderacion: req.body.ponderacion
             };
-            var query = "\n  SP_CreateDetalleEvaluacion(?,?,?,?,?);\n        ";
-            mysql_1.default.sendQuery(query, [body.idEvaluacion, body.activado, body.aleatorio, body.ponderacion, body.idAsignacionAuxiliar], function(err, data) {
+            var query = "\n CALL SP_CreateDetalleEvaluacion(" + body.idEvaluacion + "," + body.activado + "," + body.aleatorio + "," + body.ponderacion + ");\n        ";
+            mysql_1.default.sendQuery(query, function(err, data) {
                 if (err) {
                     res.status(400).json({
                         ok: false,
@@ -166,15 +192,13 @@ var EvaluacionController = /** @class */ (function() {
         };
         this.updateDetail = function(req, res) {
             var body = {
-                activado: req.body.activado,
-                idEvaluacion: req.params.idEvalucion,
-                aleatorio: req.params.aleatorio,
-                ponderacion: req.params.ponderacion,
-                id: req.params.idDetalleEvaluacion,
-                idAsignacionAuxiliar: req.params.idAsignacionAuxiliar
+                activado: req.body.habilitado,
+                aleatorio: req.body.aleatorio,
+                ponderacion: req.body.ponderacion,
+                id: req.params.id,
             };
-            var query = "\n  SP_ActualizarDetalleEvaluacion(?,?,?,?,?, ?);\n ";
-            mysql_1.default.sendQuery(query, [body.id, body.idEvaluacion, body.activado, body.aleatorio, body.ponderacion, body.idAsignacionAuxiliar], function(err, data) {
+            var query = "\n CALL  SP_ActualizarDetalleEvaluacion(" + body.id + "," + body.activado + "," + body.aleatorio + "," + body.ponderacion + ");\n ";
+            mysql_1.default.sendQuery(query, [body.id, body.activado, body.aleatorio, body.ponderacion], function(err, data) {
                 if (err) {
                     res.status(400).json({
                         ok: false,

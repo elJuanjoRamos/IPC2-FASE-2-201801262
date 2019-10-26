@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { first } from 'rxjs/operators';
 import { DetalleCursoService } from '../../../../services/detalleCurso.service';
 import { AsignacionAuxiliarService } from '../../../../services/asignacionAuxiliar.service';
+import { Usuario } from '../../../../api/models/usuario.model';
 
 @Component({
   selector: 'app-asignacionform',
@@ -20,8 +21,15 @@ export class AsignacionForm implements OnInit {
   arrayUsuarios: any[] = [];
   arrayDetalles: any[] = [];
   validar: boolean;
-  informacion:any;
-  mensaje:any;
+  informacion: any;
+  mensaje: any;
+
+
+  auxiliar: any;
+  ver: boolean = false;
+  ver2: boolean = false;
+  detalle: any;
+  estado: boolean;
   constructor(private service: UsuarioService,
     private detService: DetalleCursoService,
     private asigService: AsignacionAuxiliarService,
@@ -29,83 +37,46 @@ export class AsignacionForm implements OnInit {
     private router: Router,
     private activaderRoutes: ActivatedRoute) { }
 
-    ngOnInit() {
-      this.inicializar();
-      this.activaderRoutes.params.subscribe(params => {
-        this.uri = params["id"];
-        if (this.uri === "nuevo") {
-          this.loginForm = this.formBuilder.group({
-            idUsuario: ['', Validators.required],
-            idDetalleCurso: ['', Validators.required]
-          });
+  ngOnInit() {
+    this.inicializar();
+  }
+  inicializar() {
+    this.service.getAuxiliares().subscribe(data => {
+      this.arrayUsuarios = data;
+    });
+  }
+  cargar(object: any) {
+    this.ver = true;
+    this.auxiliar = JSON.parse(JSON.stringify(object));
+    this.detService.getDet(this.auxiliar).subscribe(data => {
+      this.arrayDetalles = data;
+    });
+  }
+  cargar2(object: any) {
+    this.ver2 = true;
+    this.detalle = JSON.parse(JSON.stringify(object));
+  }
+
+  validarAsignacion() {
+    var data = {
+      idUsuario: this.auxiliar.idUsuario,
+      idDetalleCurso: this.detalle.idDetalleCurso
+    }
+    this.asigService.post(data)
+      .subscribe(res => {
+        var informacion = JSON.parse(JSON.stringify(res));
+        if (informacion.ok === true) {
+          this.ver = false;
+          this.ver2 = false;
         } else {
-          /*this.service.getUsuario(params["id"])
-            .subscribe(usuario => {
-              this.usuario = usuario;
-              this.nombreUsuario = this.usuario.nombre;
-              this.validar = true;
-              this.loginForm = new FormGroup({
-                'nombre': new FormControl(this.usuario.nombre, Validators.required),
-                'apellido': new FormControl(this.usuario.apellido, Validators.required),
-                'username': new FormControl(this.usuario.username, Validators.required),
-                'password': new FormControl(this.usuario.pass, Validators.required),
-                'Rol_idRol': new FormControl(this.usuario.Rol_idRol, Validators.required),
-              });
-            });*/
+
+          this.estado = false;
+          this.mensaje = 'Ya existe una asignacion con los datos que esta proporcionando';
+          setTimeout(() => {
+            this.estado = true;
+          }, 3000);
         }
       });
-    }
-    inicializar(){
-      this.service.getAuxiliares().subscribe(data => {
-        this.arrayUsuarios = data;
-      });
-      this.detService.getAll().subscribe(data => {
-        this.arrayDetalles = data;
-        console.log(data);
-      });
-    }
 
-    get f() { return this.loginForm.controls; }
-    onSubmit() {
-      this.submitted = true;
-      // stop here if form is invalid
-      if (this.loginForm.invalid) {
-        return;
-      }
-      if (this.uri === 'nuevo') {
-        this.loading = true;
-        this.asigService.post(this.loginForm.value)
-          .subscribe(res => {
-            let estado = JSON.parse(JSON.stringify(res));
-            if (estado.ok) {
-              this.router.navigate(['/home/dashboard/adm/admin/asignacionauxiliar']);
-            }
-          });
-      } else {
-        /*this.service.put(this.loginForm.value, this.uri)
-          .subscribe(res => {
-            if (res) {
-              //setTimeout(() => {
-              this.router.navigate(['/home/dashboard/adm/admin/usuarios']);
-              //}, 2000);
-            }
-          });*/
-      }
-    }
-
-
-    validarAsig() {
-      this.submitted = true;
-      // stop here if form is invalid
-      if (this.loginForm.invalid) {
-        return;
-      }
-      this.asigService.verificar(this.loginForm.value).subscribe(data => {
-        this.informacion = JSON.parse(JSON.stringify(data));
-        this.validar = this.informacion.estado;
-        this.mensaje = this.informacion.mensaje;
-        console.log(this.validar);
-      });
-    }
-
+  }
 }

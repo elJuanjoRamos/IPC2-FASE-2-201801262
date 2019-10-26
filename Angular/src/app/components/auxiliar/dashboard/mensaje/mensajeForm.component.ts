@@ -57,7 +57,6 @@ export class MensajeFormComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('fileKey', this.fileToUpload, this.fileToUpload.name);
       archivo = formData;
-      console.log(archivo)
     }
 
     var data = {

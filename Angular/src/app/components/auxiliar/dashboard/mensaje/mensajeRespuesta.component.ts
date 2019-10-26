@@ -14,7 +14,7 @@ export class MensajeRespuestaComponent implements OnInit {
   submitted = false;
   returnUrl: string;
   error = '';
-  usuarios: any[] = [];
+  respuestas: any[] = [];
   mensaje: any;
   info:any;
   uri: any;
@@ -30,6 +30,10 @@ export class MensajeRespuestaComponent implements OnInit {
       this.mensajeService.get(this.uri).subscribe(data => {
         this.info = JSON.parse(JSON.stringify(data));
       }); 
+      this.mensajeService.getRespuestas(this.uri).subscribe(data => {
+        this.respuestas = data;
+        console.log(data);
+      });
       this.loginForm = this.formBuilder.group({
         mensaje: ['', Validators.required]
       });
@@ -37,5 +41,26 @@ export class MensajeRespuestaComponent implements OnInit {
     });
   }
   get f() { return this.loginForm.controls; }
+  onSubmit() {
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+      return;
+    }
+    var form = JSON.parse(JSON.stringify(this.loginForm.value));
+
+    var data = {
+      emisor: this.info.recept,
+      receptor: this.info.emisorM,
+      asunto: this.info.asunto,
+      cuerpo: form.mensaje,
+      archivo: '-',
+      idMensaje: this.uri
+    }
+    this.mensajeService.postRespuesta(data)
+        .subscribe(res => {
+          this.router.navigate(['/home/dashboard/aux/auxiliar/mensaje']);
+        });
+  }
 
 }

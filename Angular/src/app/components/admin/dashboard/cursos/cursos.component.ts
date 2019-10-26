@@ -94,9 +94,16 @@ export class CursoComponent implements OnInit {
   borrar(id: any) {
     this.service.delete(id)
     .subscribe(res => {
-      var info = JSON.parse(JSON.stringify(res));
-      this.estado = info.estado;
-      this.mensaje = info.mensaje;
+      var informacion = JSON.parse(JSON.stringify(res));
+      if (informacion.ok === true ){
+        this.inicializar();
+    } else {
+        this.estado = informacion.ok;
+        this.mensaje = informacion.error;
+        setTimeout(() => {
+          this.estado = true;
+        }, 3000);
+      }
       this.inicializar();
     });
   }

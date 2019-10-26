@@ -7,33 +7,20 @@ var mysql_1 = __importDefault(require("./../mysql/mysql"));
 var TipoEvaluacionController = /** @class */ (function() {
     function TipoEvaluacionController() {
 
-
-        //EVALUACIONES FALSO Y VERDADERO
-        this.getAllVF = function(req, res) {
-            var query = "\n            SELECT * FROM EVALUACIONVF\n        ";
+        this.getAll = function(req, res) {
+            var id = req.params.id;
+            console.log(id)
+            var query = "\n CALL SP_GETPreguntas(" + id + ") \n";
             mysql_1.default.getQuery(query, function(err, data) {
                 if (err) {
                     res.json([]);
                 } else {
+                    console.log()
                     res.json(data);
                 }
             });
         };
-        this.getSingleVF = function(req, res) {
-            var query = "\n            SELECT * FROM EVALUACIONVF WHERE idEvaluacionVF = ?\n        ";
-            var id = req.params.id;
-            mysql_1.default.sendQuery(query, id, function(err, data) {
-                if (err) {
-                    res.status(400).json({
-                        ok: false,
-                        status: 400,
-                        error: err
-                    });
-                } else {
-                    res.json(data[0]);
-                }
-            });
-        };
+
         this.createVF = function(req, res) {
             var query = "\n  CALL SP_CreateEvaluacionVF(?, ?, ?);\n        ";
             var body = {
@@ -74,35 +61,8 @@ var TipoEvaluacionController = /** @class */ (function() {
                 }
             });
         };
-
-        //EVALUACIONES SELECCION MULTIPLE
-        this.getAllSM = function(req, res) {
-            var query = "\n            SELECT * FROM EVALUACIONSM\n        ";
-            mysql_1.default.getQuery(query, function(err, data) {
-                if (err) {
-                    res.json([]);
-                } else {
-                    res.json(data);
-                }
-            });
-        };
-        this.getSingleSM = function(req, res) {
-            var query = "\n            SELECT * FROM EvaluacionSM WHERE idEvaluacionSM = ?\n        ";
-            var id = req.params.id;
-            mysql_1.default.sendQuery(query, id, function(err, data) {
-                if (err) {
-                    res.status(400).json({
-                        ok: false,
-                        status: 400,
-                        error: err
-                    });
-                } else {
-                    res.json(data[0]);
-                }
-            });
-        };
         this.createSM = function(req, res) {
-            var query = "\n  CALL SP_CreateEvaluacionVF(?, ?, ?);\n        ";
+            var query = "\n  CALL SP_CreateEvaluacionSM(?, ?, ?,?, ?, ?);\n        ";
             var body = {
                 idDetalleEvaluacion: req.body.idDetalleEvaluacion,
                 pregunta: req.body.pregunta,

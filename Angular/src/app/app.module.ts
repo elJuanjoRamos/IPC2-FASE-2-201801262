@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { JwPaginationComponent } from 'jw-angular-pagination';
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,7 +36,10 @@ import { ActividadComponent } from './components/auxiliar/dashboard/actividad/ac
 import { DetalleCursoAuxiliarComponent } from './components/auxiliar/dashboard/actividad/detalleCurso.component';
 import { EvaluacionComponent } from './components/auxiliar/dashboard/evaluacion/evaluacion.component';
 import { EvaluacionFormComponent } from './components/auxiliar/dashboard/evaluacion/evaluacionForm.component';
-
+import { NavBarEstComponent } from './components/estudiante/navbar/navbarEst.component';
+import { MisCursosComponent } from './components/estudiante/dashboard/miscursos/miscursos.component';
+import { AsignacionEstComponent } from './components/estudiante/dashboard/asignacion/asignacionest.component';
+import { CursoDetalleComponent } from './components/estudiante/dashboard/miscursos/cursoDetalle.component';
 
 
 //servicios
@@ -48,6 +51,10 @@ import { AuthenticationService } from './services/authentication.service';
 import { MensajeService } from './services/mensaje.service';
 import { ActividadService } from './services/actividad.service';
 import { EvaluacionService } from './services/evaluaion.service';
+import { TipoEvaluacionService } from './services/tipoEvaluacion.service';
+import { AsignacionEstudianteService } from './services/asignacionEstudiante.service';
+import { MensajeEstudianteComponent } from './components/estudiante/dashboard/mensaje/mensajeEst.component';
+import { RegistroAuxiliarComponent } from './registro/registroAuxiliar.component';
 
 
 
@@ -56,6 +63,7 @@ import { EvaluacionService } from './services/evaluaion.service';
     AppComponent,
     JwPaginationComponent,
     RegistroComponent,
+    RegistroAuxiliarComponent,
     LoginComponent,
     HomeComponent,
     //ESTO ES DE ADMIN
@@ -73,6 +81,13 @@ import { EvaluacionService } from './services/evaluaion.service';
     EstudianteComponent,
     DashEstudianteComponent,
     FooterComponent,
+    NavBarEstComponent,
+    MisCursosComponent,
+    AsignacionEstComponent,
+    CursoDetalleComponent,
+    MensajeEstudianteComponent,
+    MensajeFormComponent,
+    MensajeRespuestaComponent,
     //Esto es auxiliar
     AuxiliarComponent,
     DashAuxiliarComponent,
@@ -89,6 +104,7 @@ import { EvaluacionService } from './services/evaluaion.service';
   ],
   imports: [
     BrowserModule,
+    Ng2SearchPipeModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
@@ -102,7 +118,9 @@ import { EvaluacionService } from './services/evaluaion.service';
     AuthenticationService,
     MensajeService,
     ActividadService,
-    EvaluacionService
+    EvaluacionService,
+    TipoEvaluacionService,
+    AsignacionEstudianteService
   ],
   bootstrap: [AppComponent]
 })

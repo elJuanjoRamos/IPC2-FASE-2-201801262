@@ -50,8 +50,7 @@
                                         <tr>
                                             <th scope="col" class="sort" data-sort="name">ID</th>
                                             <th scope="col" class="sort" data-sort="budget">Asunto</th>
-                                            <th scope="col" class="sort" data-sort="status">Remitente</th>
-                                            <th scope="col">Estado</th>
+                                            <th scope="col" class="sort" data-sort="status">Emisor</th>
                                             <th scope="col">Acciones</th>
                                         </tr>
                                     </thead>
@@ -60,21 +59,9 @@
                                             <th> {{u.idMensaje}} </th>
                                             <td class="budget"> {{ u.asunto }} </td>
                                             <td>
-                                                {{u.rem}}
+                                                {{u.emisor}}
 
                                             </td>
-                                            <td>
-
-                                                <span *ngIf="u.leido == 0 " class="badge badge-dot mr-4">
-                                                                    <i class="bg-warning"></i>
-                                                                    <span class="status">Sin leer</span>
-                                                </span>
-                                                <span *ngIf="u.leido == 1 " class="badge badge-dot mr-4">
-                                                                <i class="bg-success"></i>
-                                                                <span class="status">Leido</span>
-                                                </span>
-                                            </td>
-
                                             <td class="table-actions">
                                                 <a [routerLink]="['/home/dashboard/aux/auxiliar/mensaje/responder/', u.idMensaje]" class="table-action" data-toggle="tooltip" data-original-title="Edit product">
                                                     <i class="fas fa-user-edit"></i>
@@ -124,7 +111,6 @@
                                                 <th scope="col" class="sort" data-sort="name">ID</th>
                                                 <th scope="col" class="sort" data-sort="budget">Asunto</th>
                                                 <th scope="col" class="sort" data-sort="status">Destinatario</th>
-                                                <th scope="col">Estado</th>
                                                 <th scope="col">Acciones</th>
                                             </tr>
                                         </thead>
@@ -133,20 +119,10 @@
                                                 <th> {{u.idMensaje}} </th>
                                                 <td class="budget"> {{ u.asunto }} </td>
                                                 <td>
-                                                    {{u.rem}}
+                                                    {{u.receptor}}
 
                                                 </td>
-                                                <td>
 
-                                                    <span *ngIf="u.leido == 0 " class="badge badge-dot mr-4">
-                                                                                <i class="bg-warning"></i>
-                                                                                <span class="status">Sin leer</span>
-                                                    </span>
-                                                    <span *ngIf="u.leido == 1 " class="badge badge-dot mr-4">
-                                                                            <i class="bg-success"></i>
-                                                                            <span class="status">Leido</span>
-                                                    </span>
-                                                </td>
 
                                                 <td class="table-actions">
                                                     <a [routerLink]="['/home/dashboard/aux/auxiliar/mensaje/responder/', u.idMensaje]" class="table-action" data-toggle="tooltip" data-original-title="Edit product">

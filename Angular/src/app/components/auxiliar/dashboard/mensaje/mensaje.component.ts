@@ -13,9 +13,11 @@ export class MensajeComponent implements OnInit {
   inicilizar() {
     this.service.getMisMensajes(localStorage.getItem('id')).subscribe(data => {
       this.arrayMensajes = data;
-    });
+      console.log(data);
+        });
     this.service.getMensajesEnviados(localStorage.getItem('id')).subscribe(data => {
       this.arrayMensajesEnviados = data;
+
     });
   }
   ngOnInit() {

@@ -46,7 +46,8 @@ export class DetalleCursoFormComponent implements OnInit {
                     semestre: ['', Validators.required],
                     anio: ['', Validators.required],
                     horaInicio: ['', Validators.required],
-                    horaFin: ['', Validators.required]
+                    horaFin: ['', Validators.required],
+                    fechaFin: ['', Validators.required]
                 });
             } else {
                 this.service.getDetalle(params["id"])
@@ -59,6 +60,7 @@ export class DetalleCursoFormComponent implements OnInit {
                     'semestre': new FormControl(this.detalle.semestre, Validators.required),
                     'anio': new FormControl(this.detalle.anio, Validators.required),
                     'horaInicio': new FormControl(this.detalle.horaInicio,  Validators.required),
+                    'fechaFin': new FormControl(this.detalle.fechaFin,  Validators.required),
                     'horaFin': new FormControl(this.detalle.horaFin,  Validators.required)
                   });
                 });
@@ -81,7 +83,7 @@ export class DetalleCursoFormComponent implements OnInit {
                             this.router.navigate(['/home/dashboard/adm/admin/detallecurso']);
                         } else {
                             this.estado = this.informacion.ok;
-                            this.mensaje = this.informacion.mensaje;
+                            this.mensaje = this.informacion.error;
                         }
                 });
         } else {

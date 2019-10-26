@@ -7,7 +7,7 @@ import { Curso } from '../api/models/curso.model';
 @Injectable(/*{ providedIn: 'root' }*/)
 export class CursoService {
     URI = 'http://localhost:3000/api';
-    headers = new HttpHeaders({'Content-Type': 'application/json','Authorization': localStorage.getItem('token')});
+    headers = new HttpHeaders({'Content-Type': 'application/json','Authorization': localStorage.getItem('id')});
 
     constructor(private http: HttpClient) { }
 
@@ -31,9 +31,16 @@ export class CursoService {
                 return data;
             }));
     }
+    postDesasignar(detalle:any) {
+        let data = JSON.stringify(detalle);
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
+        return this.http.post(`${this.URI}/desasignarcurso/`, data, { headers }).pipe(map(data => {
+            return data;
+        }));
+    }
 
     delete(id:any) {
-        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token')});
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.delete(`${this.URI}/curso/${id}`, { headers }).pipe(map(data => {
             console.log(data);
             return data;
@@ -41,14 +48,14 @@ export class CursoService {
     }
     post(curso:any) {
         let data = JSON.stringify(curso);
-        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token')});
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.post(`${this.URI}/curso/`, data, { headers }).pipe(map(data => {
             return data;
         }));
     }
     put(curso:any, id:any) {
         let data = JSON.stringify(curso);
-        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('token')});
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.put(`${this.URI}/curso/${id}`, data, { headers }).pipe(map(data => {
             return data;
         }));

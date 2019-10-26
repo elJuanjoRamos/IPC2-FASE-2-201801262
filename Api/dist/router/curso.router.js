@@ -10,6 +10,7 @@ curso.get('/curso/', curso_controller_1.default.getInstance().getAll);
 curso.get('/cursos/activos', curso_controller_1.default.getInstance().getActivos);
 curso.get('/curso/:id', curso_controller_1.default.getInstance().getSingle);
 curso.post('/curso', curso_controller_1.default.getInstance().create);
+curso.post('/desasignarcurso', curso_controller_1.default.getInstance().createDes);
 curso.put('/curso/:id', curso_controller_1.default.getInstance().update);
 curso.delete('/curso/:id', curso_controller_1.default.getInstance().delete);
 exports.default = curso;

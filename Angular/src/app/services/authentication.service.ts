@@ -31,6 +31,7 @@ export class AuthenticationService {
             username: usuario.username,
             password: usuario.password
         };
+        console.log(data);
         this.http.post(uriUsuario, data, { headers: head })
             .subscribe(user => {
                 console.log(user[0]);
@@ -38,21 +39,19 @@ export class AuthenticationService {
                     'results': JSON.stringify(user[0]),
                     'json': () => { return user[0]; }
                 };
-                
+
                 let rol = JSON.parse(JSON.stringify(res.json())).idTipoUsuario;
                 //if (token) {
-                    console.log("Si existe el token");
-                    //localStorage.setItem('token', token);
-                    localStorage.setItem('id', JSON.parse(JSON.stringify(res.json())).idUsuario);
+                localStorage.setItem('id', JSON.parse(JSON.stringify(res.json())).idUsuario);
 
 
-                    if (rol === 1) {
-                        this.router.navigate(['/home/dashboard/adm/admin']);
-                    } else if (rol === 2) {
-                        this.router.navigate(['/home/dashboard/aux/auxiliar']);
-                    } else if (rol === 3) {
-                        this.router.navigate(['/home/dashboard/est/estudiante']);
-                    }
+                if (rol === 1) {
+                    this.router.navigate(['/home/dashboard/adm/admin']);
+                } else if (rol === 2) {
+                    this.router.navigate(['/home/dashboard/aux/auxiliar']);
+                } else if (rol === 3) {
+                    this.router.navigate(['/home/dashboard/est/estudiante']);
+                }
                 /*} else {
                     console.log("No existen token");
                     return false;

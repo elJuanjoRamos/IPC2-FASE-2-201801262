@@ -45,7 +45,6 @@ export class DetalleCursoAuxiliarComponent implements OnInit {
 
   get f() { return this.loginForm.controls; }
   onSubmit() {
-    console.log(this.loginForm.value)  
     this.submitted = true;
     // stop here if form is invalid
     if (this.loginForm.invalid) {
@@ -100,7 +99,6 @@ export class DetalleCursoAuxiliarComponent implements OnInit {
     }
     this.actividadService.put(body, this.uri).subscribe(data => {
         this.inicializar();
-        this.cargarForm();
     });
   }
   inicializar(){

@@ -1,0 +1,180 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Cursos</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Estudiante</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Mi curso</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div *ngIf="miCurso" class="card mb-4">
+        <!-- Card header -->
+        <div class="card-header">
+            <h3 class="mb-0">Informacion del Curso</h3>
+        </div>
+        <!-- Card body -->
+
+        <div class="card-body">
+            <br>
+            <div class="text-center">
+                <h5 class="h3">
+                    Nombre: {{miCurso.nombre}}<span class="font-weight-light"></span>
+                </h5>
+                <div class="h5 font-weight-300">
+                    <i class="ni location_pin mr-2"></i>Estado: Habilitado
+                </div>
+                <div class="h5 mt-4">
+                    <i class="ni business_briefcase-24 mr-2"></i>Codigo: {{miCurso.codigo}} - Seccion: {{miCurso.seccion}}
+                </div>
+                <div>
+                    <i class="ni education_hat mr-2"></i>Horario: {{miCurso.horaInicio}} to {{miCurso.horaFin}}
+                </div>
+                <div>
+                    <i class="ni education_hat mr-2"></i>Auxiliar: {{miCurso.aux}}
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+
+                </div>
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-block btn-warning mb-3" data-toggle="modal" data-target="#modal-notification">Desasignar</button>
+                    <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+                        <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                            <div class="modal-content bg-gradient-danger">
+                                <div class="modal-header">
+                                    <h6 class="modal-title" id="modal-title-notification">Estudiante, Tu atencion es requerida</h6>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                              </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="py-3 text-center">
+                                        <i class="ni ni-bell-55 ni-3x"></i>
+                                        <h4 class="heading mt-4">Estas por desasignarte un curso!</h4>
+                                        <p>Esto enviara una solicitud a los administradores para darte de baja.</p>
+                                        <p>Desasignarte del curso implica que perderas todos los puntos obtenidos hasta ahora</p>
+                                        <p>Presiona Aceptar si estas seguro de tus acciones</p>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-white" (click)='desasignar()'>Aceptar</button>
+                                    <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+
+</div>
+<br>
+<br><br>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-wrapper">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <div class="text-center">
+                            <h3 class="mb-0">Actividades</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+
+</div>
+<br><br><br>
+<div class="container-fluid mt--6">
+    <div class="row card-wrapper">
+        <div *ngFor="let u of misActividades" class="col-lg-4">
+            <!-- Basic with card title -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <!-- Title -->
+                            <h5 class="h3 mb-0">Nombre: {{u.nombre}}</h5>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}}</p>
+                    <p class="card-text mb-4">Fecha Limite: {{u.fechaLimite}}</p>
+                    <p class="card-text mb-4">Hora Limite: {{u.horaLimite}}</p>
+                    <a [routerLink]="['/home/dashboard/aux/auxiliar/evaluaciones/', u.idEvaluacion]" class="btn btn-primary">Resolver Actividad</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<br><br>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-wrapper">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <div class="text-center">
+                            <h3 class="mb-0">Evaluaciones</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+
+</div>
+<br><br><br>
+<div class="container-fluid mt--6">
+    <div class="row card-wrapper">
+        <div *ngFor="let u of misEvaluaciones" class="col-lg-4">
+            <!-- Basic with card title -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <!-- Title -->
+                            <h5 class="h3 mb-0">Nombre: {{u.nombre}}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}} pts</p>
+                    <a [routerLink]="['/home/dashboard/aux/auxiliar/evaluaciones/', u.idEvaluacion]" class="btn btn-primary">Resolver la Evaluacion</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>

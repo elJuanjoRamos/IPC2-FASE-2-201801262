@@ -20,3 +20,10 @@ INSERT INTO Seccion (nombre) VALUES ('F');
 INSERT INTO Seccion (nombre) VALUES ('G');
 INSERT INTO Seccion (nombre) VALUES ('H');
 INSERT INTO Seccion (nombre) VALUES ('I');
+
+insert into AsignacionEstudiante(idUsuario, idAsignacionAuxiliar) VALUES(3,2)
+
+SELECT AsignacionEstudiante.idAsignacionAuxiliar, (SELECT Usuario.idUsuario, concat(Usuario.nombre, ' ' , Usuario.apellido) from AsignacionAuxiliar) as auxiliar, Usuario.carnet FROM AsignacionEstudiante
+INNER JOIN AsignacionAuxiliar as aux ON AsignacionEstudiante.idAsignacionAuxiliar = aux.idAsignacionAuxiliar
+INNER JOIN Usuario on AsignacionEstudiante.idUsuario = Usuario.idUsuario
+WHERE AsignacionEstudiante.idUsuario = 3

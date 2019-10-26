@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-control-label" for="idSeccion">idSeccion</label>
+                                    <label class="form-control-label" for="idSeccion">Seccion</label>
                                     <select formControlName="idSeccion" name="account" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.idSeccion.errors }">
                                         <option *ngFor="let u of arraySecciones"  value="{{u.idSeccion}}"  >{{ u.nombre }}</option>
                                      </select>
@@ -94,6 +94,15 @@
                                                 <input type="time" formControlName="horaFin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.horaFin.errors }" />
                                                 <div *ngIf="submitted && f.horaFin.errors" class="invalid-feedback">
                                                     <div *ngIf="f.horaFin.errors.required">La hora de finalizacion es requerida</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label" for="fechaFin">Fecha limite de asignacion</label>
+                                                <input type="date" formControlName="fechaFin" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.fechaFin.errors }" />
+                                                <div *ngIf="submitted && f.fechaFin.errors" class="invalid-feedback">
+                                                    <div *ngIf="f.fechaFin.errors.required">La fecha limite es requerida</div>
                                                 </div>
                                             </div>
                                         </div>

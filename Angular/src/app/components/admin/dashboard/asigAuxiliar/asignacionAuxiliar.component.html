@@ -24,7 +24,17 @@
         <div class="col">
             <div class="card shadow">
                 <div class="card-header border-0">
-                    <h3 class="mb-0">Detalles de Asignacion</h3>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="mb-0">Detalles de Asignacion</h3>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input placeholder="Buscar" class="form-control form-control-sm" [(ngModel)]="term" type="text">
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="table-responsive">
                     <table class="table table-flush" id="datatable-basic">
@@ -40,7 +50,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let u of arrayAsignacion">
+                            <tr *ngFor="let u of arrayAsignacion |filter:term">
                                 <th scope="row">
                                     {{u.idAsignacionAuxiliar}}
                                 </th>
@@ -74,9 +84,7 @@
                                             <i class="fas fa-ellipsis-v"></i>
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                            <a class="dropdown-item">Detalles</a>
-                                            <a class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idAsignacionAuxiliar)'>Eliminar</a>
-                                            <a [routerLink]="['/home/dashboard/adm/admin/usuarios/', u.idUsuario]" class="dropdown-item">Editar</a>
+                                            <a class="dropdown-item" data-toggle="modal" data-target="#modal-notification" (click)='obtenerId(u.idAsignacionAuxiliar)'>Desasignar</a>
                                         </div>
                                     </div>
                                 </td>
@@ -94,12 +102,13 @@
             </div>
         </div>
     </div>
+
     <div class="col-md-4">
         <div class="modal fade" id="modal-notification" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
             <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
                 <div class="modal-content bg-gradient-danger">
                     <div class="modal-header">
-                        <h6 class="modal-title" id="modal-title-notification">Tu atencion es requerida</h6>
+                        <h6 class="modal-title" id="modal-title-notification"><a style="color:white">Tu atencion es requerida</a></h6>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">×</span>
                 </button>
@@ -107,12 +116,23 @@
                     <div class="modal-body">
                         <div class="py-3 text-center">
                             <i class="ni ni-bell-55 ni-3x"></i>
-                            <h4 class="heading mt-4">Una asignacion está por ser eliminado</h4>
-                            <p>Presione Eliminar si esta seguro de sus acciones.</p>
+                            <h4 class="heading mt-4">Una Auxiliar esta por ser desasignado</h4>
+                            <p>Al deshacer la asignacion, esta se eliminara permantentemente.</p>
+
                         </div>
+                        <form [formGroup]="loginForm">
+                            <p>Escriba el motivo por el que se desea desasignar.</p>
+                            <textarea formControlName="motivo" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.motivo.errors }" cols="50" rows="5">
+                                
+                            </textarea>
+                            <div *ngIf="submitted && f.motivo.errors" class="invalid-feedback">
+                                <div *ngIf="f.motivo.errors.required" class="color:white">El motivo es requerido</div>
+                            </div>
+                        </form>
+
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()' data-dismiss="modal">Eliminar</button>
+                        <button type="button" class="btn btn-white" (click)='aceptarEliminar()'>Desasignar</button>
                         <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cancelar</button>
                     </div>
                 </div>

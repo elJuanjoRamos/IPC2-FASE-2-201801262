@@ -9,6 +9,7 @@ var asignacionAuxiliar = express_1.Router();
 asignacionAuxiliar.get('/asignacion-auxiliar', asignacion_auxiliar_controller_1.default.getInstance().getAll);
 asignacionAuxiliar.get('/asignacion-auxiliar/:id', asignacion_auxiliar_controller_1.default.getInstance().getSingle);
 asignacionAuxiliar.get('/asignacion-auxiliar/view/:id', asignacion_auxiliar_controller_1.default.getInstance().getMyCourses);
+asignacionAuxiliar.get('/asignacion-auxiliar/est/:id', asignacion_auxiliar_controller_1.default.getInstance().getMyCoursesEst);
 asignacionAuxiliar.get('/asignacion-auxiliar/alumnos/:id', asignacion_auxiliar_controller_1.default.getInstance().getMyStudents);
 asignacionAuxiliar.post('/asignacion-auxiliar', asignacion_auxiliar_controller_1.default.getInstance().create);
 asignacionAuxiliar.put('/asignacion-auxiliar/:id', asignacion_auxiliar_controller_1.default.getInstance().update);

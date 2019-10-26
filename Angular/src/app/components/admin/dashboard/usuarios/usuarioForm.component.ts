@@ -70,18 +70,12 @@ export class UsuarioFormComponent implements OnInit {
       this.loading = true;
       this.service.post(this.loginForm.value)
         .subscribe(res => {
-          if (res) {
-            this.router.navigate(['/home/dashboard/adm/admin/usuarios']);
-          }
+          this.router.navigate(['/home/dashboard/adm/admin/usuarios']);
         });
     } else {
       this.service.put(this.loginForm.value, this.uri)
         .subscribe(res => {
-          if (res) {
-            //setTimeout(() => {
-            this.router.navigate(['/home/dashboard/adm/admin/usuarios']);
-            //}, 2000);
-          }
+          this.router.navigate(['/home/dashboard/adm/admin/usuarios']);
         });
     }
   }

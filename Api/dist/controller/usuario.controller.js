@@ -30,16 +30,15 @@ var UsuarioController = /** @class */ (function() {
             var query = "\n            SELECT Usuario.idUsuario, Usuario.carnet, Usuario.dpi, Usuario.nombre, Usuario.apellido, Usuario.username,\n            TipoUsuario.nombre as 'tipo'\n            FROM DetalleUsuario\n            INNER JOIN Usuario ON DetalleUsuario.idUsuario = Usuario.idUsuario\n            INNER JOIN TipoUsuario ON DetalleUsuario.idTipoUsuario = TipoUsuario.idTipoUsuario\n            WHERE TipoUsuario.idTipoUsuario = 2;\n        ";
             mysql_1.default.getQuery(query, function(err, data) {
                 if (err) {
-                    console.log(err)
                     res.json([]);
                 } else {
-                    console.log(data)
                     res.json(data);
                 }
             });
         };
         this.getAllEstudiante = function(req, res) {
-            var query = "\n            SELECT Usuario.idUsuario, Usuario.carnet, Usuario.dpi, Usuario.nombre, Usuario.apellido, Usuario.username,\n            TipoUsuario.nombre as 'tipo'\n            FROM DetalleUsuario\n            INNER JOIN Usuario ON DetalleUsuario.idUsuario = Usuario.idUsuario\n            INNER JOIN TipoUsuario ON DetalleUsuario.idTipoUsuario = TipoUsuario.idTipoUsuario\n            WHERE TipoUsuario.idTipoUsuario = 3;\n        ";
+            var id = req.params.id;
+            var query = "select distinct Usuario.nombre, Usuario.apellido, Usuario.idUsuario FROM AsignacionEstudiante \n inner join usuario on AsignacionEstudiante.idUsuario = Usuario.idUsuario \n Inner Join AsignacionAuxiliar on AsignacionEstudiante.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar \n where AsignacionAuxiliar.idUsuario = " + id;
             mysql_1.default.getQuery(query, function(err, data) {
                 if (err) {
                     res.json([]);
@@ -97,7 +96,6 @@ var UsuarioController = /** @class */ (function() {
                 username: req.body.username,
                 password: req.body.password
             };
-            console.log(body);
             mysql_1.default.sendQuery(query, [body.username, body.password], function(err, data) {
                 if (err) {
                     res.status(400).json({
