@@ -1,5 +1,5 @@
 -- USE DATABASE
-USE Proyecto1;
+USE dbFase2;
 
 -- INSERTAR TIPOS DE USUARIO
 INSERT INTO TipoUsuario(nombre, descripcion) VALUES ('Administrador', 'Administrador de la pagina web.');
@@ -21,4 +21,6 @@ INSERT INTO Seccion (nombre) VALUES ('G');
 INSERT INTO Seccion (nombre) VALUES ('H');
 INSERT INTO Seccion (nombre) VALUES ('I');
 
+
+select * from actividadalumno
 

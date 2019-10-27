@@ -9,7 +9,7 @@ var MySQL = /** @class */ (function () {
             host: 'localhost',
             user: 'root',
             password: '1234',
-            database: 'proyecto1'
+            database: 'dbFase2'
         });
         this.conectarDB();
     }
