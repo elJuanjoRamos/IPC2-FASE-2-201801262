@@ -61,6 +61,8 @@ import { MensajeEstudianteRespComponent } from './components/estudiante/dashboar
 import { TicketComponent } from './components/estudiante/dashboard/ticket/ticket.component';
 import { TicketService } from './services/ticket.service';
 import { TicketAdmComponent } from './components/admin/dashboard/ticket/ticketadm.component';
+import { MisActividadesComponent } from './components/estudiante/dashboard/misactividades/misactividades.component';
+import { ResolverEvaluacionComponent } from './components/estudiante/dashboard/resolverEvaluacion/resolverEvaluacion.component';
 
 
 
@@ -81,6 +83,8 @@ import { TicketAdmComponent } from './components/admin/dashboard/ticket/ticketad
     CursoComponent,
     DetalleCursoComponent,
     DetalleCursoFormComponent,
+    MisActividadesComponent,
+    ResolverEvaluacionComponent,
     AsignacionAuxiliar,
     AsignacionForm,
     DesasignacionComponent,

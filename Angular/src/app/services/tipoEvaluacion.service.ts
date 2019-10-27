@@ -11,8 +11,18 @@ export class TipoEvaluacionService {
     constructor(private http: HttpClient) { }
 
     getAll(id: any) {
-        console.log('el id es ' + id)
         return this.http.get<any[]>(`${this.URI}/tipoevaluacion/${id}`).pipe(map(user => {
+                return user;
+            }));
+    }
+    getAll2(id: any) {
+        return this.http.get<any[]>(`${this.URI}/tipoevaluacionr/${id}`).pipe(map(user => {
+                return user;
+            }));
+    }
+
+    getAllMisEvaluaciones(id: any) {
+        return this.http.get<any[]>(`${this.URI}/getmisev/${id}`).pipe(map(user => {
                 return user;
             }));
     }
@@ -28,6 +38,13 @@ export class TipoEvaluacionService {
         let data = JSON.stringify(tipo);
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.post(`${this.URI}/evaluacionsm/`, data, { headers }).pipe(map(user => {
+            return user;
+        }));
+    }
+    postMiEvaluacion(tipo:any) {
+        let data = JSON.stringify(tipo);
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
+        return this.http.post(`${this.URI}/posteval/`, data, { headers }).pipe(map(user => {
             return user;
         }));
     }

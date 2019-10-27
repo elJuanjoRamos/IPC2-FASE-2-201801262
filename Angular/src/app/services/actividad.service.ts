@@ -24,6 +24,11 @@ export class ActividadService {
                 return data;
             }));
     }
+    getMyActiv(id: any) {
+        return this.http.get<any[]>(`${this.URI}/miactiv/${id}`).pipe(map(data => {
+                return data;
+            }));
+    }
     delete(id:any) {
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.delete(`${this.URI}/actividad/${id}`, { headers }).pipe(map(data => {
@@ -42,6 +47,14 @@ export class ActividadService {
         let data = JSON.stringify(actividad);
         var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
         return this.http.put(`${this.URI}/actividad/${id}`, data, { headers }).pipe(map(data => {
+            return data;
+        }));
+    }
+
+    postRespuesta(actividad: any) {
+        let data = JSON.stringify(actividad);
+        var headers = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': localStorage.getItem('id')});
+        return this.http.post(`${this.URI}/miactividad/`, data, { headers }).pipe(map(data => {
             return data;
         }));
     }

@@ -199,7 +199,9 @@ CREATE TABLE ActividadAlumno(
     idAlumno INT NOT NULL,
     idActividad INT NOT NULL,
     entregada INT NOT NULL,
+    ponderacion INT NOT NULL,
     archivo BLOB NULL,
+    fecha datetime NOT NULL,
 	FOREIGN KEY (idActividad) REFERENCES Actividad(idActividad)
 	ON UPDATE CASCADE
     ON DELETE CASCADE,
@@ -595,7 +597,20 @@ BEGIN
 END;
 $$
 
-BEGIN  -- PROCEDIMIENTOS ALMACENADOS QUE YA ESTABAN CREADO
+DELIMITER $$
+CREATE PROCEDURE SP_GETPreguntas2
+(IN _idDetalleEvaluacion INT)
+BEGIN
+	DECLARE _existe INT;
+    SET _existe = (SELECT COUNT(*) FROM EvaluacionVF WHERE idDetalleEvaluacion = _idDetalleEvaluacion);
+	IF(_existe >= 1) THEN
+		SELECT * FROM EvaluacionVF WHERE  idDetalleEvaluacion = _idDetalleEvaluacion ORDER BY RAND();
+    ELSE
+		SELECT * FROM EvaluacionSM WHERE  idDetalleEvaluacion = _idDetalleEvaluacion ORDER BY RAND();
+	END IF;
+END;
+$$
+
 
  -- Very long query;
  -- SP AGREGAR DETALLE USUARIO
@@ -835,7 +850,53 @@ select idAsignacionEstudiante, Usuario.idUsuario, concat(Usuario.nombre, ' ', Us
 
 END;
 $$
---HOLA
+
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_EntregarActividad
+(IN _idUsuario INT,IN _idAsig INT , IN _e INT, IN _p INT)
+BEGIN
+DECLARE _existe INT;
+	SET _existe = (select COUNT(*) FROM ActividadAlumno WHERE idAlumno = _idUsuario AND idActividad = _idAsig);
+	IF(_existe = 0) THEN
+        INSERT INTO ActividadAlumno(idAlumno, idActividad, entregada, ponderacion, fecha) VALUES(_idUsuario, _idAsig, _e, _p, NOW() );
+		SELECT _existe;
+	ELSE
+		SELECT _existe;
+	END IF;
 END;
+$$
+
+
+DELIMITER $$
+CREATE PROCEDURE SP_GetActiv
+(IN id INT)
+BEGIN
+DECLARE _existe INT;
+SELECT Actividad.nombre, Actividad.ponderacion as pondAct, ActividadAlumno.ponderacion, fecha, Curso.nombre as 'curso' From ActividadAlumno
+INNER JOIN Actividad ON ActividadAlumno.idActividad = Actividad.idActividad
+INNER JOIN AsignacionAuxiliar ON Actividad.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar
+INNER JOIN DetalleCurso ON AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso
+INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso
+WHERE idAlumno = id;
+END;
+$$
+
+DELIMITER $$
+CREATE PROCEDURE SP_EvaluacionesRealizadas
+(IN id INT)
+BEGIN
+DECLARE _existe INT;
+SELECT Evaluacion.nombre as ev, Curso.nombre as cur, punteo FROM EvaluacionAlumno
+INNER JOIN EVALUACION ON EvaluacionAlumno.idEvaluacion = Evaluacion.idEvaluacion
+INNER JOIN AsignacionAuxiliar ON EVALUACION.idAsignacionAuxiliar = AsignacionAuxiliar.idAsignacionAuxiliar
+INNER JOIN DetalleCurso ON AsignacionAuxiliar.idDetalleCurso = DetalleCurso.idDetalleCurso
+INNER JOIN Curso ON DetalleCurso.idCurso = Curso.idCurso
+WHERE EvaluacionAlumno.idUsuario =  id;
+END;
+$$
+
+
 
 

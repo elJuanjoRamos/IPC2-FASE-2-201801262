@@ -130,10 +130,10 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}}</p>
+                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}} Pts</p>
                     <p class="card-text mb-4">Fecha Limite: {{u.fechaLimite}}</p>
                     <p class="card-text mb-4">Hora Limite: {{u.horaLimite}}</p>
-                    <a [routerLink]="['/home/dashboard/aux/auxiliar/evaluaciones/', u.idEvaluacion]" class="btn btn-primary">Resolver Actividad</a>
+                    <a (click)='resolver(u.idActividad)' style="color:white" class="btn btn-primary">Resolver Actividad</a>
                 </div>
             </div>
         </div>
@@ -175,8 +175,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}} pts</p>
-                    <a [routerLink]="['/home/dashboard/aux/auxiliar/evaluaciones/', u.idEvaluacion]" class="btn btn-primary">Resolver la Evaluacion</a>
+                    <p class="card-text mb-4">Ponderacion: {{u.ponderacion}} Pts</p>
+                    <a [routerLink]="['/home/dashboard/est/estudiante/resolver/', u.idEvaluacion]" class="btn btn-primary">Resolver la Evaluacion</a>
 
                 </div>
             </div>

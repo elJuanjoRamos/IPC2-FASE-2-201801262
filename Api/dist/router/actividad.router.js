@@ -8,7 +8,9 @@ var actividad_controller_1 = __importDefault(require("./../controller/actividad.
 var actividad = express_1.Router();
 actividad.get('/actividad/:id', actividad_controller_1.default.getInstance().getSingle);
 actividad.get('/actividad/miactividad/:id', actividad_controller_1.default.getInstance().getMyActivity);
+actividad.get('/miactiv/:id', actividad_controller_1.default.getInstance().getMisActiv);
 actividad.post('/actividad', actividad_controller_1.default.getInstance().create);
+actividad.post('/miactividad', actividad_controller_1.default.getInstance().createMiActividad);
 actividad.put('/actividad/:id', actividad_controller_1.default.getInstance().update);
 actividad.delete('/actividad/:id', actividad_controller_1.default.getInstance().delete);
 exports.default = actividad;

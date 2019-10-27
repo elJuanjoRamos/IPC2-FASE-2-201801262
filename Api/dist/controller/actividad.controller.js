@@ -19,6 +19,20 @@ var ActividadController = /** @class */ (function() {
                 }
             });
         };
+        this.getMisActiv = function(req, res) {
+            var body = {
+                idActividad: req.params.id
+            };
+            var query = "\n CALL SP_GetActiv(" + body.idActividad + ")   \n  ";
+
+            mysql_1.default.getQuery(query, function(err, data) {
+                if (err) {
+                    res.json([]);
+                } else {
+                    res.json(data[0]);
+                }
+            });
+        };
         this.getSingle = function(req, res) {
             var query = "\n SELECT * FROM ACTIVIDAD WHERE idActividad = ?; \n        ";
             var body = {
@@ -70,6 +84,31 @@ var ActividadController = /** @class */ (function() {
             ], function(err, data) {
                 if (err) {
                     res.status(400).json({
+                        ok: false,
+                        status: 400,
+                        error: err
+                    });
+                } else {
+                    res.json({
+                        ok: true,
+                        status: 200
+                    });
+                }
+            });
+        };
+        this.createMiActividad = function(req, res) {
+
+            var query = "\n CALL SP_EntregarActividad(?,?,?,?)\n        ";
+            var body = {
+                idAlumno: req.body.idUsuario,
+                idActividad: req.body.idActividad,
+                entregada: req.body.entregada,
+                calificacion: req.body.ponderacion
+            };
+            console.log(body)
+            mysql_1.default.sendQuery(query, [body.idAlumno, body.idActividad, body.entregada, body.calificacion], function(err, data) {
+                if (err) {
+                    res.json({
                         ok: false,
                         status: 400,
                         error: err

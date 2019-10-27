@@ -42,9 +42,9 @@
                         </a>
                     </div>
                     <br>
-                    <button *ngIf="u.enviado == 1" (click)='actualizar1(u)' type="button" class="btn btn-info">Recibido</button>
-                    <button *ngIf="u.recibido == 1" (click)='actualizar2(u)' type="button" class="btn btn-primary">En Proceso</button>
-                    <button *ngIf="u.enproceso == 1" (click)='actualizar3(u)' type="button" class="btn btn-warning">Termiado</button>
+                    <button *ngIf="u.enviado == 1" (click)='actualizar1(u)' type="button" class="btn btn-info btn-sm">Recibido</button>
+                    <button *ngIf="u.recibido == 1" (click)='actualizar2(u)' type="button" class="btn btn-primary btn-sm">En Proceso</button>
+                    <button *ngIf="u.enproceso == 1" (click)='actualizar3(u)' type="button" class="btn btn-warning btn-sm">Termiado</button>
                 </div>
             </div>
         </div>

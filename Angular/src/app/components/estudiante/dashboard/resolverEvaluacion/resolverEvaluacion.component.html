@@ -1,0 +1,131 @@
+<div class="header bg-primary pb-6">
+    <div class="container-fluid">
+        <div class="header-body">
+            <div class="row align-items-center py-4">
+                <div class="col-lg-6 col-7">
+                    <h6 class="h2 text-white d-inline-block mb-0">Evaluacion</h6>
+                    <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
+                        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+                            <li class="breadcrumb-item"><a><i class="fas fa-home"></i></a></li>
+                            <li class="breadcrumb-item"><a>Estudiante</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Resolve Evaluacion</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt--6">
+    <div class="card mb-4">
+        <!-- Card header -->
+        <div class="card-header">
+            <h3 class="mb-0">Informacion de la evaluacion</h3>
+        </div>
+        <!-- Card body -->
+
+        <div class="card-body">
+            <br>
+            <div class="text-center">
+                <h5 class="h3">
+                    Nombre: {{evaluacion.nombre}}<span class="font-weight-light"></span>
+                </h5>
+                <div class="h5 font-weight-300">
+                    <i class="ni location_pin mr-2"></i>Estado: Habilitado
+                </div>
+            </div>
+            <br>
+
+        </div>
+    </div>
+</div>
+<br>
+<br><br>
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card-wrapper">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header">
+                        <div class="text-center">
+                            <h3 class="mb-0">Preguntas</h3>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Footer -->
+
+</div>
+<br><br><br>
+<div class="container-fluid mt--6">
+    <div class="col-xl-12 order-xl-2">
+        <div *ngIf="validarPreguntas == true" class="card">
+            <!-- Card header -->
+            <div class="card-header">
+                <!-- Title -->
+                <h5 class="h3 mb-0">Preguntas</h5>
+            </div>
+            <!-- Card body -->
+            <div class="card-body">
+                <!-- List group -->
+                <ul class="list-group list-group-flush list my--3">
+                    <li class="list-group-item px-0">
+                        <div *ngFor="let u of arrayPreguntasRestpuestas" class="row align-items-center">
+                            <div class="col-auto">
+                                <!-- Avatar -->
+                                <a class="avatar rounded-circle">
+                                    <img alt="Image placeholder" src="../../assets/img/theme/react.jpg">
+                                </a>
+                            </div>
+                            <div *ngIf="validarVF" class="col">
+                                <h5> Pregunta: {{u.pregunta}}</h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="custom-control custom-radio mb-3">
+                                            <input name="custom-radio-1" class="custom-control-input" id="{{u.pregunta}}" type="radio">
+                                            <label class="custom-control-label" for="{{u.pregunta}}">Verdadero</label>
+                                        </div>
+                                        <div class="custom-control custom-radio mb-3">
+                                            <input name="custom-radio-1" class="custom-control-input" id="{{u.pregunta}}6" type="radio">
+                                            <label class="custom-control-label" for="{{u.pregunta}}6">Falso</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                            <div *ngIf="validarSM" class="col">
+                                <br>
+                                <h4>Pregunta: {{u.pregunta}}</h4>
+                                <div class="col-md-6">
+                                    <div class="custom-control custom-radio mb-3">
+                                        <input name="custom-radio-1" class="custom-control-input" id="customRadio5" type="radio">
+                                        <label class="custom-control-label" for="customRadio5">{{u.respuesta1}}</label>
+                                    </div>
+                                    <div class="custom-control custom-radio mb-3">
+                                        <input name="custom-radio-1" class="custom-control-input" id="customRadio6" type="radio">
+                                        <label class="custom-control-label" for="customRadio6">{{u.respuesta2}}</label>
+                                    </div>
+                                    <div class="custom-control custom-radio mb-3">
+                                        <input name="custom-radio-1" class="custom-control-input" id="customRadio7" type="radio">
+                                        <label class="custom-control-label" for="customRadio7">{{u.respuesta3}}</label>
+                                    </div>
+
+                                </div>
+                                <br>
+                                <hr>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <a (click)='terminar()' style="color:white" class="btn btn-primary">Terminar y entregar</a>
+
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UsuarioService } from '../../../services/usuario.service';
 
 
 @Component({
@@ -7,8 +8,14 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html'
 })
 export class NavBarComponent implements OnInit {
-
-  constructor(private router: Router) { }
+  usuario:any;
+  usuarios: any[] = []
+  constructor(private router: Router, private service: UsuarioService) { 
+    this.usuario = null;
+    this.service.getUsuario(localStorage.getItem('id')).subscribe(data => {
+      this.usuarios.push(data[0]);
+    });
+  }
 
   ngOnInit() {
   }

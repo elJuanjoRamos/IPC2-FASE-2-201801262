@@ -7,7 +7,8 @@ import { MensajeEstudianteComponent } from './dashboard/mensaje/mensajeEst.compo
 import { MensajeEstudianteFormComponent } from './dashboard/mensaje/mensajeEstForm.component';
 import { MensajeEstudianteRespComponent } from './dashboard/mensaje/mensajeEstResp.component';
 import { TicketComponent } from './dashboard/ticket/ticket.component';
-
+import { MisActividadesComponent } from './dashboard/misactividades/misactividades.component';
+import { ResolverEvaluacionComponent } from './dashboard/resolverEvaluacion/resolverEvaluacion.component';
 
 
 export const estudiante_routes: Routes = [
@@ -19,6 +20,8 @@ export const estudiante_routes: Routes = [
   { path: 'estudiante/mensaje/nuevo', component: MensajeEstudianteFormComponent },
   { path: 'estudiante/mensaje/responder/:id', component: MensajeEstudianteRespComponent },
   { path: 'estudiante/ticket', component: TicketComponent },
+  { path: 'estudiante/actividad', component: MisActividadesComponent },
+  { path: 'estudiante/resolver/:id', component: ResolverEvaluacionComponent },
   {path: '**', pathMatch: 'full', redirectTo: 'estudiante'}
 ];
 

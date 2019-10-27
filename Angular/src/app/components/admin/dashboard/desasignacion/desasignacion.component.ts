@@ -17,7 +17,6 @@ export class DesasignacionComponent implements OnInit {
   inicializar(){
     this.service.getSolicitudes().subscribe(data => {
       this.solicitudes = data;
-      console.log(data);
     });
   }
   eliminar(id:any) {
