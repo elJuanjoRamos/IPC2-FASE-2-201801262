@@ -56,6 +56,7 @@ export class ResolverEvaluacionComponent implements OnInit {
         if( this.detalleEvaluacion.aleatorio == 1 ){
           this.tipoService.getAll2(this.detalleEvaluacion.idDetalleEvaluacion).subscribe(f => {
             this.arrayPreguntasRestpuestas = f[0];
+            console.log(this.arrayPreguntasRestpuestas)
             if(this.arrayPreguntasRestpuestas.some(item => item.tipo === 'SM') == true ) {
               this.validarSM = true;
             } else {
@@ -69,6 +70,7 @@ export class ResolverEvaluacionComponent implements OnInit {
         } else {
           this.tipoService.getAll(this.detalleEvaluacion.idDetalleEvaluacion).subscribe(f => {
             this.arrayPreguntasRestpuestas = f[0];
+            console.log(this.arrayPreguntasRestpuestas)
             if(this.arrayPreguntasRestpuestas.some(item => item.tipo === 'SM') == true ) {
               this.validarSM = true;
             } else {
